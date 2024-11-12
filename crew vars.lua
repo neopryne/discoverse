@@ -23,15 +23,21 @@ local ROCK_CULTIST = {INTELLECT=3, PSYCHE=3, inland_empire=1, PHYSIQUE=4, endura
 local ROCK_COMMANDO = {INTELLECT=3, PSYCHE=3, espirit_de_corps=1, PHYSIQUE=4, endurance=2, pain_threshold=1, MOTORICS=2, composure=2}
 local ROCK_CRUSADER = {INTELLECT=3, PSYCHE=3, espirit_de_corps=1, PHYSIQUE=4, endurance=2, pain_threshold=1, MOTORICS=2}
 local ROCK_PALADIN = {INTELLECT=3, PSYCHE=5, authority=2, espirit_de_corps=2, PHYSIQUE=6, endurance=3, pain_threshold=1, MOTORICS=2, composure=2}
-local CRYSTAL =
-local MANTIS =
-local FREE_MANTIS =
-local SLUG =
-local SLUG_HEKTAR =
-local SLUG_SABOTUER =
-local SLUG_RANGER =
-local SLUG_CLANSMAN =
-local KNIGHT_OF_NIGHTS =
+local CRYSTAL = {INTELLECT=3, PSYCHE=4, PHYSIQUE=4, MOTORICS=3}
+local CRYSTAL_SENTINAL = {INTELLECT=6, PSYCHE=6, PHYSIQUE=6, MOTORICS=6}
+local CRYSTAL_LIBERATOR = {INTELLECT=6, PSYCHE=6, PHYSIQUE=6, MOTORICS=6}
+local MANTIS = {INTELLECT=2, PSYCHE=2, PHYSIQUE=4, MOTORICS=1}
+local FREE_MANTIS = {INTELLECT=2, PSYCHE=3, PHYSIQUE=4, MOTORICS=1}
+local FREE_MANTIS_CHAOS = {INTELLECT=2, PSYCHE=3, PHYSIQUE=4, MOTORICS=1}
+local FREE_MANTIS_WARLORD = {INTELLECT=3, PSYCHE=3, PHYSIQUE=5, MOTORICS=1}
+local MANTIS_SUZERAIN = {INTELLECT=4, PSYCHE=3, PHYSIQUE=6, MOTORICS=2}
+local MANTIS_BISHOP = {INTELLECT=4, PSYCHE=5, PHYSIQUE=7, MOTORICS=2}
+local SLUG = {INTELLECT=4, PSYCHE=4, PHYSIQUE=3, MOTORICS=3}
+local SLUG_HEKTAR = {INTELLECT=4, PSYCHE=4, PHYSIQUE=3, MOTORICS=3}
+local SLUG_SABOTUER = {INTELLECT=4, PSYCHE=6, PHYSIQUE=5, MOTORICS=6}
+local SLUG_RANGER = {INTELLECT=5, PSYCHE=6, PHYSIQUE=6, MOTORICS=6}
+local SLUG_CLANSMAN = {INTELLECT=5, PSYCHE=5, PHYSIQUE=5, MOTORICS=5}
+local KNIGHT_OF_NIGHTS = {INTELLECT=7, PSYCHE=7, PHYSIQUE=7, MOTORICS=7}
 local ORCHID = {INTELLECT=3, PSYCHE=3, PHYSIQUE=3, electrochemistry=1, MOTORICS=3}
 local ORCHID_PRAETOR = {INTELLECT=3, logic=1, encylopedia=1, rhetoric=1, drama=1, PSYCHE=4, empathy=-1, authority=1, PHYSIQUE=3, pain_threshold=-1, MOTORICS=3, composure=1}
 local ORCHID_CARETAKER = {INTELLECT=3, encylopedia=1, rhetoric=1, conceptualization=1, visual_calculus=1, PSYCHE=3, empathy=1, PHYSIQUE=3, electrochemistry=1, MOTORICS=3, composure=1}
@@ -39,14 +45,15 @@ local VAMPWEED = {INTELLECT=3, PSYCHE=3, PHYSIQUE=3, electrochemistry=1, MOTORIC
 local ORCHID_CULTIVATOR = ORCHID_CARETAKER
 local SHELL =
 local LEECH =
-local GAS_HATCHLING =
-local GAS_ADULT =
-local GAS_WEAVER =
-local GAS_QUEEN =
-local LIZARD =
+local GAS_HATCHLING = {INTELLECT=1, PSYCHE=2, PHYSIQUE=1, MOTORICS=0}
+local GAS_ADULT = {INTELLECT=2, PSYCHE=4, PHYSIQUE=5, MOTORICS=1}
+local GAS_WEAVER = {INTELLECT=5, PSYCHE=6, PHYSIQUE=4, MOTORICS=7}
+local GAS_QUEEN = {INTELLECT=6, PSYCHE=7, PHYSIQUE=10, MOTORICS=6}
+local LIZARD = {INTELLECT=2, PSYCHE=3, PHYSIQUE=4, MOTORICS=4}
 local PONY =
-local PONY =
-local PONY =
+local PONY_TAMED =
+local PONY_CRYSTAL =
+--Uniques
 local TULLY = {INTELLECT=7, PSYCHE=7, PHYSIQUE=5, MOTORICS=7}
 local HAYNES = {INTELLECT=9, PSYCHE=7, PHYSIQUE=5, electrochemistry=4, MOTORICS=6, perception=3, interfacing=-1, composure=2}
 local JERRY = {INTELLECT=3, PSYCHE=3, empathy=6, PHYSIQUE=3, MOTORICS=3}
@@ -67,13 +74,13 @@ local TUCO = {INTELLECT=3, PSYCHE=4, PHYSIQUE=6, MOTORICS=3}
 local ARIADNE = {INTELLECT=6, PSYCHE=6, PHYSIQUE=6, MOTORICS=4}
 local RUWEN = {INTELLECT=7, PSYCHE=6, PHYSIQUE=5, MOTORICS=4}
 local DIANESH = {INTELLECT=7, PSYCHE=6, PHYSIQUE=5, MOTORICS=4}
-local OBYN =
+local OBYN = {INTELLECT=5, PSYCHE=6, PHYSIQUE=6, MOTORICS=4}
 local BILLY = {INTELLECT=6, PSYCHE=6, PHYSIQUE=4, MOTORICS=4}
 local NIGHTS = {INTELLECT=6, PSYCHE=8, PHYSIQUE=6, MOTORICS=6}
 local SLOCKNOG = {INTELLECT=5, PSYCHE=6, PHYSIQUE=5, MOTORICS=6}
 local IRWIN = {INTELLECT=5, PSYCHE=6, PHYSIQUE=7, MOTORICS=5}
 local IRWIN_DEMON = {INTELLECT=5, PSYCHE=8, PHYSIQUE=9, MOTORICS=5}
-local SYLVAN =
+local SYLVAN = {INTELLECT=8, PSYCHE=11, PHYSIQUE=10, MOTORICS=9}
 local TONY_SR = {INTELLECT=3, PSYCHE=2, PHYSIQUE=2, endurance=5, MOTORICS=2}--a sad sack of a man
 local TYREDO = {INTELLECT=4, PSYCHE=3, PHYSIQUE=4, MOTORICS=5} --Just copy his stats to the bird to avoid dumb dillution
 local ALKRAM = {INTELLECT=4, PSYCHE=5, PHYSIQUE=6, MOTORICS=7}
@@ -82,10 +89,33 @@ local OOJ_MAJOO = {INTELLECT=5, PSYCHE=7, PHYSIQUE=6, MOTORICS=7}
 local ANNOINTED = {INTELLECT=9, PSYCHE=9, PHYSIQUE=9, MOTORICS=9}
 local BEACON_EATER = {INTELLECT=5, PSYCHE=7, PHYSIQUE=9, MOTORICS=7}
 local DESSIUS = {INTELLECT=7, PSYCHE=9, PHYSIQUE=8, MOTORICS=7}
-local GUNTPUT =
-local METYUNT =
-local WITHER =
+local GUNTPUT = {INTELLECT=4, PSYCHE=7, PHYSIQUE=6, MOTORICS=7}
+local METYUNT = {INTELLECT=5, PSYCHE=4, PHYSIQUE=4, MOTORICS=4}
+local WITHER = {INTELLECT=6, PSYCHE=6, PHYSIQUE=6, MOTORICS=3}
+local TYEREL = {INTELLECT=6, PSYCHE=6, PHYSIQUE=6, MOTORICS=5}
+local MAYEB = {INTELLECT=5, encylopedia=1, rhetoric=1, conceptualization=1, visual_calculus=1, PSYCHE=5, empathy=1, PHYSIQUE=3, electrochemistry=1, MOTORICS=4, composure=1}
+local IVAR = {INTELLECT=4, PSYCHE=5, PHYSIQUE=5, MOTORICS=4}
+local THEST = {INTELLECT=6, PSYCHE=10, PHYSIQUE=6, MOTORICS=6}
+local CORBY = {INTELLECT=10, PSYCHE=6, PHYSIQUE=6, MOTORICS=6}
+local WAKESON = {INTELLECT=6, PSYCHE=6, PHYSIQUE=10, MOTORICS=6}
 local PONY =
+local PONY =
+local BATTLE_DRONE = {INTELLECT=3, PSYCHE=4, PHYSIQUE=5, MOTORICS=4}
+local BATTLE_DRONE_2 = {INTELLECT=3, PSYCHE=4, PHYSIQUE=7, MOTORICS=5}
+local ION_INTRUDER = {INTELLECT=3, PSYCHE=5, PHYSIQUE=6, MOTORICS=5}
+local REPAIR_DRONE = {INTELLECT=3, PSYCHE=3, PHYSIQUE=3, MOTORICS=4}
+local DOCTOR_DRONE = {INTELLECT=6, PSYCHE=5, PHYSIQUE=3, MOTORICS=5}
+local MANAGER_DRONE = {INTELLECT=4, PSYCHE=3, PHYSIQUE=2, MOTORICS=2}
+local RECON_DRONE = {INTELLECT=2, PSYCHE=2, PHYSIQUE=2, MOTORICS=5}
+local CONSTRUCTOR_DRONE = {INTELLECT=2, PSYCHE=2, PHYSIQUE=3, MOTORICS=4}
+local PRODUCER_DRONE = {INTELLECT=2, PSYCHE=4, PHYSIQUE=3, MOTORICS=2}
+local GRAZIER_DRONE = {INTELLECT=2, PSYCHE=2, PHYSIQUE=5, MOTORICS=2}
+local ATOM_DRONE = {INTELLECT=2, PSYCHE=2, PHYSIQUE=3, physical_instrument=5, MOTORICS=5}
+local DIRECTOR_DRONE = {INTELLECT=6, PSYCHE=5, PHYSIQUE=3, MOTORICS=3}
+local MENDER_DRONE = {INTELLECT=5, PSYCHE=3, PHYSIQUE=3, MOTORICS=7}
+local A5540L3 = {INTELLECT=8, PSYCHE=7, PHYSIQUE=7, MOTORICS=5}
+local GANA_DRONE = {INTELLECT=7, PSYCHE=6, PHYSIQUE=6, MOTORICS=5}
+local ROOMBA = {INTELLECT=2, PSYCHE=2, PHYSIQUE=2, MOTORICS=2}
 local PONY =
 
 --Base crew get 12 total stats.  Elite/Unique can have more.
@@ -103,7 +133,7 @@ global CREW_STAT_TABLE = {
     human_mfk=HUMAN_MFK,
     human_legion={INTELLECT=7, PSYCHE=7, PHYSIQUE=7,  MOTORICS=7},
     human_legion_pyro={INTELLECT=7, PSYCHE=7, drama=1, PHYSIQUE=7, half_light=1, MOTORICS=7},
-    unique_cyra=nil,
+    unique_cyra=HUMAN_MFK,--TODO
     unique_tully= TULLY,
     unique_vance={INTELLECT=7, PSYCHE=7, PHYSIQUE=5, MOTORICS=7},
     unique_haynes=HAYNES,
@@ -112,7 +142,7 @@ global CREW_STAT_TABLE = {
     unique_jerry_pony=JERRY_PONY,
     unique_jerry_pony_crystal=JERRY_PONY_CRYSTAL,
     unique_leah=LEAH,
-    unique_leah_mfk=HUMAN_MFK,
+    unique_leah_mfk=HUMAN_MFK,--TODO
     unique_ellie=ELLIE,
     unique_ellie_stephan=STEPHAN,
     unique_ellie_lvl1={INTELLECT=3, PSYCHE=1, PHYSIQUE=5, MOTORICS=5},
@@ -128,9 +158,9 @@ global CREW_STAT_TABLE = {
     orchid_praetor=ORCHID_PRAETOR,
     orchid_vampweed=VAMPWEED,
     orchid_cultivator=ORCHID_CULTIVATOR,
-    unique_tyerel
-    unique_mayeb
-    unique_ivar
+    unique_tyerel=TYEREL,
+    unique_mayeb=MAYEB,
+    unique_ivar=IVAR,
     --Engi
     engi=ENGI,
     engi_separatist=ENGI_SEPERATIST,
@@ -145,7 +175,7 @@ global CREW_STAT_TABLE = {
     zoltan_martyr={INTELLECT=3, rhetoric=1, drama=1, PSYCHE=3, volition=2, PHYSIQUE=3, physical_instrument=1, half_light=1, MOTORICS=3, reaction_speed=1, composure=-1},
     unique_devorak=DEVORAK,
     unique_anurak=ANURAK,
-    zoltan_osmian
+    zoltan_osmian=ZOLTAN,--IDK
     --Rock
     rock=ROCK,
     rock_outcast=ROCK_OUTCAST,
@@ -153,18 +183,18 @@ global CREW_STAT_TABLE = {
     rock_commando=ROCK_COMMANDO,
     rock_crusader=ROCK_CRUSADER,
     rock_paladin=ROCK_PALADIN,
-    rock_elder
+    rock_elder=,
     unique_symbiote=SYMBIOTE,
     unique_vortigon=VORTIGON,
     unique_tuco=TUCO,
     unique_ariadne=ARIADNE,
     --Mantis
-    mantis
-    mantis_suzerain
-    mantis_free
-    mantis_free_chaos
-    mantis_warlord
-    mantis_bishop
+    mantis=MANTIS,
+    mantis_suzerain=MANTIS_SUZERAIN,
+    mantis_free=FREE_MANTIS,
+    mantis_free_chaos=FREE_MANTIS_CHAOS,
+    mantis_warlord=FREE_MANTIS_WARLORD,
+    mantis_bishop=MANTIS_BISHOP,
     unique_kaz=KAZ,
     unique_freddy=FREDDY,
     unique_freddy_fedora=FREDDY,
@@ -181,18 +211,18 @@ global CREW_STAT_TABLE = {
     nexus_obyn_cel
     --Slug
     slug=SLUG,
-    slug_hektar=
-    slug_hektar_box
-    slug_saboteur
-    slug_clansman
-    slug_ranger
-    slug_knight
-    unique_billy
-    unique_billy_box
-    unique_nights
-    unique_slocknog
-    unique_irwin
-    unique_irwin_demon
+    slug_hektar=SLUG_HEKTAR,
+    slug_hektar_box=SLUG_HEKTAR,
+    slug_saboteur=SLUG_SABOTUER,
+    slug_clansman=SLUG_CLANSMAN,
+    slug_ranger=SLUG_RANGER,
+    slug_knight=KNIGHT_OF_NIGHTS,
+    unique_billy=BILLY,
+    unique_billy_box=BILLY,
+    unique_nights=NIGHTS,
+    unique_slocknog=SLOCKNOG,
+    unique_irwin=IRWIN,
+    unique_irwin_demon=IRWIN_DEMON,
     unique_sylvan=SYLVAN,
     --todo I don't know enough about these, giving them all sylvan stats for now.
     nexus_sylvan_cel=SYLVAN,
@@ -213,9 +243,9 @@ global CREW_STAT_TABLE = {
     leech=LEECH
     leech_ampere
     unique_tonysr=TONY_SR
-    unique_tyrdeo
-    unique_tyrdeo_bird
-    unique_alkram
+    unique_tyrdeo=TYREDO
+    unique_tyrdeo_bird=TYREDO
+    unique_alkram=ALKRAM
     --Siren
     siren
     siren_harpy
@@ -225,13 +255,13 @@ global CREW_STAT_TABLE = {
     shell_mechanic
     shell_guardian
     shell_radiant
-    unique_alkali
+    unique_alkali = ALKALI
     --Lanius
-    lanius
+    lanius =
     lanius_welder
     lanius_augmented
-    unique_anointed
-    unique_eater
+    unique_anointed = ANNOINTED
+    unique_eater = BEACON_EATER
     --Ghost
     phantom
     phantom_alpha
@@ -241,7 +271,7 @@ global CREW_STAT_TABLE = {
     phantom_mare_alpha
     phantom_wraith
     phantom_wraith_alpha
-    unique_dessius
+    unique_dessius = DESSIUS
     gbeleanor
     gbscoleri
     gbslimer
@@ -257,9 +287,9 @@ global CREW_STAT_TABLE = {
     spider_venom_chaos
     tinybug
     --Lizard thing
-    lizard
-    unique_guntput
-    unique_metyunt
+    lizard = LIZARD,
+    unique_guntput = GUNTPUT,
+    unique_metyunt = METYUNT,
     --Pony
     pony = PONY
     pony_tamed
@@ -289,111 +319,111 @@ global CREW_STAT_TABLE = {
     unique_judge_corby
     unique_judge_wakeson
     --Dronesss
-    a55
-    gana
-    battle --ion intruder
-    drone_battle
+    a55=A5540L3,
+    gana=GANA_DRONE,
+    battle=ION_INTRUDER,
+    drone_battle=BATTLE_DRONE,
     drone_yinyang
     drone_yinyang_chaos
     loot_separatist_1 --idk
-    drone_battle2
+    drone_battle2=BATTLE_DRONE_2,
     repairboarder
     repair
     divrepair
     butler
-    drone_recon --unused?
-    drone_recon_defense
-    doctor
+    drone_recon=RECON_DRONE,
+    drone_recon_defense=RECON_DRONE,
+    doctor=DOCTOR_DRONE,
     surgeon
     surgeon_chaos
     manning
     manningenemy=nil
     drone_holodrone
     drone_holodrone_chaos
-    drone_vamp_constructor
-    drone_vamp_producer
-    drone_vamp_grazier
-    mender
-    menderr
-    director
-    atom
-    atomr
-    roomba
+    drone_vamp_constructor=CONSTRUCTOR_DRONE,
+    drone_vamp_producer=PRODUCER_DRONE,
+    drone_vamp_grazier=GRAZIER_DRONE,
+    mender=MENDER_DRONE,
+    menderr=MENDER_DRONE,
+    director=DIRECTOR_DRONE,
+    atom=ATOM_DRONE,
+    atomr=ATOM_DRONE,
+    roomba=ROOMBA,
     --Morph
     blob
-    unique_ooj = OOJ_MAJOO
-    unique_ooj_love = OOJ_MAJOO
-    blobhuman=HUMAN
-    blobzoltan=ZOLTAN
-    blobrock=ROCK
-    blobcrystal=CRYSTAL
-    blobmantis=MANTIS
-    blobfreemantis=FREE_MANTIS
-    blobslug=SLUG
-    bloborchid=ORCHID
-    blobvampweed=VAMPWEED
-    blobswarm=nil
-    blobshell=SHELL
-    blobleech=LEECH
-    blobhatch=GAS_HATCHLING
-    blobspider=GAS_ADULT
-    blobweaver=GAS_WEAVER
-    bloblizard=LIZARD
-    blobpony=PONY
-    blobsalt=ROCK
+    unique_ooj = OOJ_MAJOO,
+    unique_ooj_love = OOJ_MAJOO,
+    blobhuman=HUMAN,
+    blobzoltan=ZOLTAN,
+    blobrock=ROCK,
+    blobcrystal=CRYSTAL,
+    blobmantis=MANTIS,
+    blobfreemantis=FREE_MANTIS,
+    blobslug=SLUG,
+    bloborchid=ORCHID,
+    blobvampweed=VAMPWEED,
+    blobswarm=nil,
+    blobshell=SHELL,
+    blobleech=LEECH,
+    blobhatch=GAS_HATCHLING,
+    blobspider=GAS_ADULT,
+    blobweaver=GAS_WEAVER,
+    bloblizard=LIZARD,
+    blobpony=PONY,
+    blobsalt=ROCK,
     techno
-    technoengi
-    technolanius
+    technoengi=ENGI,
+    technolanius=LANIUS,
     technoancient
     technoavatar --idk
-    technobattle  --they can do drones i guess
-    technobattle2
-    technoboarderion
-    technorepair
-    technodoctor
-    technomanning
-    technorecon
-    technoconstructor
-    technoproducer
-    technograzier
-    technoatom
-    technodirector
-    technomender
-    technoa55
-    technogana
-    technoroomba
+    technobattle=BATTLE_DRONE,  --they can do drones i guess
+    technobattle2=BATTLE_DRONE_2,
+    technoboarderion=ION_INTRUDER,
+    technorepair=REPAIR_DRONE,
+    technodoctor=DOCTOR_DRONE,
+    technomanning=MANAGER_DRONE,
+    technorecon=RECON_DRONE,
+    technoconstructor=CONSTRUCTOR_DRONE,
+    technoproducer=PRODUCER_DRONE,
+    technograzier=GRAZIER_DRONE,
+    technoatom=ATOM_DRONE,
+    technodirector=DIRECTOR_DRONE,
+    technomender=MENDER_DRONE,
+    technoa55=A5540L3,
+    technogana=GANA_DRONE,
+    technoroomba=ROOMBA,
     gold
-    goldsoldier = HUMAN_SOLDIER
-    golddefend = ENGI_DEFENDER
-    goldcrusader = ROCK_CRUSADER
-    goldsentinel = CRYSTAL_SENTINAL
-    goldsuzerain = MANTIS_SUZERAIN
-    goldwarlord = FREE_MANTIS_WARLORD
-    goldsabo = SLUG_SABOTUER
-    goldwelder = LANIUS_WELDER
-    goldpraetor = ORCHID_PRAETOR
-    goldcultivator = ORCHID_CULTIVATOR
+    goldsoldier = HUMAN_SOLDIER,
+    golddefend = ENGI_DEFENDER,
+    goldcrusader = ROCK_CRUSADER,
+    goldsentinel = CRYSTAL_SENTINAL,
+    goldsuzerain = MANTIS_SUZERAIN,
+    goldwarlord = FREE_MANTIS_WARLORD,
+    goldsabo = SLUG_SABOTUER,
+    goldwelder = LANIUS_WELDER,
+    goldpraetor = ORCHID_PRAETOR,
+    goldcultivator = ORCHID_CULTIVATOR,
     goldtoxic --shell
-    goldampere = LEECH_AMPERE
-    goldroyal = OBELISK_ROYAL
-    goldqueen = GAS_QUEEN
+    goldampere = LEECH_AMPERE,
+    goldroyal = OBELISK_ROYAL,
+    goldqueen = GAS_QUEEN,
     --EE?
     eldritch_spawn
     --Forgotten Races
-    snowman
-    snowman_chaos
-    fr_lavaman
+    snowman=SNOWMAN,
+    snowman_chaos=SNOWMAN_CHAOS,
+    fr_lavaman=LAVAMAN,
     fr_commonwealth
     fr_spherax
-    fr_unique_billvan
-    fr_unique_billvan_box
-    fr_unique_sammy
-    fr_unique_sammy_buff --??
+    fr_unique_billvan=SYLVAN,
+    fr_unique_billvan_box=SYLVAN,
+    fr_unique_sammy=SAMMY,
+    fr_unique_sammy_buff=SAMMY,
     fr_gozer
     fr_CE_avatar
     fr_errorman
-    fr_sylvan_cel
-    fr_obyn_cel
+    fr_sylvan_cel=SYLVAN
+    fr_obyn_cel=OBYN
     fr_withered
     fr_enhanced
     fr_proto_cognitive
@@ -466,9 +496,9 @@ global CREW_STAT_TABLE = {
     fr_bonus_prince_jerry
     fr_bonus_tririac
     --FR Drones
-    fr_atomc --blue
+    fr_atomc=ATOM_DRONE
     fr_menderc
-    fr_directorc
+    fr_directorc=DIRECTOR_DRONE
     fr_atomw --yellow
     fr_menderw
     fr_directorw
@@ -540,36 +570,36 @@ global CREW_STAT_TABLE = {
     enlightened_horror_cej
     enlightened_horror_cfj
     enlightened_horror_cgj
-    ddnightmare_rift=nil
-    ddnightmare_rift_a=nil
-    ddnightmare_rift_b=nil
-    ddnightmare_rift_c=nil
-    ddnightmare_rift_ad=nil
-    ddnightmare_rift_ae=nil
-    ddnightmare_rift_af=nil
-    ddnightmare_rift_ag=nil
-    ddnightmare_rift_bd=nil
-    ddnightmare_rift_be=nil
-    ddnightmare_rift_bf=nil
-    ddnightmare_rift_bg=nil
-    ddnightmare_rift_cd=nil
-    ddnightmare_rift_ce=nil
-    ddnightmare_rift_cf=nil
-    ddnightmare_rift_cg=nil
-    ddnightmare_rift_adj=nil
-    ddnightmare_rift_aej=nil
-    ddnightmare_rift_afj=nil
-    ddnightmare_rift_agj=nil
-    ddnightmare_rift_bdj=nil
-    ddnightmare_rift_bej=nil
-    ddnightmare_rift_bfj=nil
-    ddnightmare_rift_bgj=nil
-    ddnightmare_rift_cdj=nil
-    ddnightmare_rift_cej=nil
-    ddnightmare_rift_cfj=nil
-    ddnightmare_rift_cgj=nil
-    spacetear=nil
-    darkgodtendrils=nil
+    ddnightmare_rift=nil,
+    ddnightmare_rift_a=nil,
+    ddnightmare_rift_b=nil,
+    ddnightmare_rift_c=nil,
+    ddnightmare_rift_ad=nil,
+    ddnightmare_rift_ae=nil,
+    ddnightmare_rift_af=nil,
+    ddnightmare_rift_ag=nil,
+    ddnightmare_rift_bd=nil,
+    ddnightmare_rift_be=nil,
+    ddnightmare_rift_bf=nil,
+    ddnightmare_rift_bg=nil,
+    ddnightmare_rift_cd=nil,
+    ddnightmare_rift_ce=nil,
+    ddnightmare_rift_cf=nil,
+    ddnightmare_rift_cg=nil,
+    ddnightmare_rift_adj=nil,
+    ddnightmare_rift_aej=nil,
+    ddnightmare_rift_afj=nil,
+    ddnightmare_rift_agj=nil,
+    ddnightmare_rift_bdj=nil,
+    ddnightmare_rift_bej=nil,
+    ddnightmare_rift_bfj=nil,
+    ddnightmare_rift_bgj=nil,
+    ddnightmare_rift_cdj=nil,
+    ddnightmare_rift_cej=nil,
+    ddnightmare_rift_cfj=nil,
+    ddnightmare_rift_cgj=nil,
+    spacetear=nil,
+    darkgodtendrils=nil,
     nightmarish_crawler
     nightmarish_terror
     nightmarish_priest
@@ -605,39 +635,40 @@ global CREW_STAT_TABLE = {
     disparity_engirainbow_beacon
     
     --Hektar Expansion
-    slug_hektar_elite
-    modular_dronebattle_base_base --Eventually I'll replace this with individual ones.
-    modular_dronebattle_base_bio
-    modular_dronebattle_base_stun
-    modular_dronebattle_base_lockdown
-    modular_dronebattle_base_pierce
-    modular_dronebattle_base_cooldown
-    modular_dronebattle_accuracy_base
-    modular_dronebattle_accuracy_bio
-    modular_dronebattle_accuracy_stun
-    modular_dronebattle_accuracy_lockdown
-    modular_dronebattle_accuracy_pierce
-    modular_dronebattle_accuracy_cooldown
-    modular_dronebattle_fire_base
-    modular_dronebattle_fire_bio
-    modular_dronebattle_fire_stun
-    modular_dronebattle_fire_lockdown
-    modular_dronebattle_fire_pierce
-    modular_dronebattle_fire_cooldown
-    modular_dronebattle_hull_base
-    modular_dronebattle_hull_bio
-    modular_dronebattle_hull_stun
-    modular_dronebattle_hull_lockdown
-    modular_dronebattle_hull_pierce
-    modular_dronebattle_hull_cooldown
-    modular_dronebattle_power_base--battle2
-    modular_dronebattle_power_bio
-    modular_dronebattle_power_stun
-    modular_dronebattle_power_lockdown
-    modular_dronebattle_power_pierce
-    modular_dronebattle_power_cooldown
+    slug_hektar_elite=SLUG_HEKTAR,--eh
+    modular_dronebattle_base_base=BATTLE_DRONE, --Eventually I'll replace this with individual ones.
+    modular_dronebattle_base_bio=BATTLE_DRONE,
+    modular_dronebattle_base_stun=BATTLE_DRONE,
+    modular_dronebattle_base_lockdown=BATTLE_DRONE,
+    modular_dronebattle_base_pierce=BATTLE_DRONE,
+    modular_dronebattle_base_cooldown=BATTLE_DRONE,
+    modular_dronebattle_accuracy_base=BATTLE_DRONE,
+    modular_dronebattle_accuracy_bio=BATTLE_DRONE,
+    modular_dronebattle_accuracy_stun=BATTLE_DRONE,
+    modular_dronebattle_accuracy_lockdown=BATTLE_DRONE,
+    modular_dronebattle_accuracy_pierce=BATTLE_DRONE,
+    modular_dronebattle_accuracy_cooldown=BATTLE_DRONE,
+    modular_dronebattle_fire_base=BATTLE_DRONE,
+    modular_dronebattle_fire_bio=BATTLE_DRONE,
+    modular_dronebattle_fire_stun=BATTLE_DRONE,
+    modular_dronebattle_fire_lockdown=BATTLE_DRONE,
+    modular_dronebattle_fire_pierce=BATTLE_DRONE,
+    modular_dronebattle_fire_cooldown=BATTLE_DRONE,
+    modular_dronebattle_hull_base=BATTLE_DRONE,
+    modular_dronebattle_hull_bio=BATTLE_DRONE,
+    modular_dronebattle_hull_stun=BATTLE_DRONE,
+    modular_dronebattle_hull_lockdown=BATTLE_DRONE,
+    modular_dronebattle_hull_pierce=BATTLE_DRONE,
+    modular_dronebattle_hull_cooldown=BATTLE_DRONE,
+    modular_dronebattle_power_base=BATTLE_DRONE_2,--battle2
+    modular_dronebattle_power_bio=BATTLE_DRONE_2,
+    modular_dronebattle_power_stun=BATTLE_DRONE_2,
+    modular_dronebattle_power_lockdown=BATTLE_DRONE_2,
+    modular_dronebattle_power_pierce=BATTLE_DRONE_2,
+    modular_dronebattle_power_cooldown=BATTLE_DRONE_2,
     
-    ARI_MECH
+    --ARI_MECH  I don't know what the fuck that thing is
+    --[[
     mutant
     clone_soldier
     
@@ -671,7 +702,7 @@ global CREW_STAT_TABLE = {
     aea_bird_avali
     aea_bird_illuminant
     aea_bird_unique
-    
+    --]]
     
     easter_brick=ROCKMAN,
     easter_coomer=HUMAN_SOLDIER,

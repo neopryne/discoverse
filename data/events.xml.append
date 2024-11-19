@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mod:findName type="event" name="ROCK_WEAPON_MEASURING">
+	<mod-append:choice>
+		<text>events version</text>
+		<event>
+			<text>The Rock is actually shocked. "I feel bad for the poor lady that has to..."contend" with that member of your ship's arsenal. She won't be wal-...flying for weeks. You deserve a reward for having such a large weapon hung on your hull."</text>
+			<item_modify>
+				<item type="scrap" min="45" max="78"/>
+				<item type="missiles" min="5" max="7"/>
+			</item_modify>
+		</event>
+	</mod-append:choice>
+</mod:findName>

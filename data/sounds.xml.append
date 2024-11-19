@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<disco_check_fail volume="5">skill_checks/check_failure.ogg</disco_check_fail>
+<disco_check_success volume="5">skill_checks/check_success.ogg</disco_check_success>
+<disco_intellect volume="3">skill_checks/intellect.ogg</disco_intellect>
+<disco_motorics volume="3">skill_checks/motorics.ogg</disco_motorics>
+<disco_physique volume="3">skill_checks/physique.ogg</disco_physique>
+<disco_psyche volume="3">skill_checks/psyche.ogg</disco_psyche>

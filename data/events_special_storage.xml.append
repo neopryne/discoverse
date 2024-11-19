@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+
+<!--All appends for a given event must have different max_groups.  FM is 620-ish, I claim 640-649.-->
+<mod:findName type="event" name="STORAGE_CHECK_LAB_FFF_F22_THERMAL_IMAGING">
+	<!--Passive Check-->
+	<mod-append:choice req="pilot" lvl="1" max_group="640" blue="false">
+		<text>special storage version</text>
+		<event>
+			<text>The Rock is actually shocked. "I feel bad for the poor lady that has to..."contend" with that member of your ship's arsenal. She won't be wal-...flying for weeks. You deserve a reward for having such a large weapon hung on your hull."</text>
+			<item_modify>
+				<item type="scrap" min="45" max="78"/>
+				<item type="missiles" min="5" max="7"/>
+			</item_modify>
+		</event>
+	</mod-append:choice>
+	<!--Active Check-->
+	<mod-append:choice req="pilot" lvl="1" max_group="641" blue="true">
+		<text>special storage active</text>
+		<event name="STORAGE_CHECK_LAB_FFF_F22_THERMAL_IMAGING_REACTION_SUCCES">
+			<text>winner WIUNNER winar wirnarg such a large weapon hung on your hull."</text>
+			<item_modify>
+				<item type="scrap" min="45" max="78"/>
+				<item type="missiles" min="5" max="7"/>
+			</item_modify>
+		</event>
+	</mod-append:choice>
+	<mod-append:choice req="pilot" lvl="1" max_group="642" blue="false">
+		<text>special storage active</text>
+		<event name="STORAGE_CHECK_LAB_FFF_F22_THERMAL_IMAGING_REACTION_FAILURE">
+			<text>oh no *ugh(* on hung on your hull."</text>
+			<item_modify>
+				<item type="scrap" min="45" max="78"/>
+				<item type="missiles" min="5" max="7"/>
+			</item_modify>
+		</event>
+	</mod-append:choice>
+</mod:findName>
+
+
+<event name="LAB_TEST_1_PASSIVE">
+	<text load="TEXT_BLOCK_EXAMPLE" />
+	<choice hidden="true">
+		<text>Continue...</text>
+	</choice>
+</event>
+
+<event name="LAB_TEST_1_FAIL">
+	<text load="TEXT_BLOCK_EXAMPLE" />
+	<choice hidden="true">
+		<text>Continue...</text>
+	</choice>
+</event>
+
+<event name="LAB_TEST_1_SUCCESS">
+	<text load="TEXT_BLOCK_EXAMPLE" />
+	<choice hidden="true">
+		<text>Continue...</text>
+	</choice>
+</event>
+
+<textList name="TEXT_BLOCK_EXAMPLE">
+    <text>A short screech plays over the comms followed by a looping message of binary. You don't have time to translate before a Separatist ship fires a warning shot that ricochets off your defenses.</text>
+    <text>A strangely verbose Engi hails you. "Unfortunate time of encounter, -Federation- ship. I appear to have [damaged] the part of my system that encodes for reason and logic, and now have the burning desire to kill."</text>
+    <text>An enraged Separatist hails you. "Problem: You have -accidentally- stepped on lifelong friend of [mine] in microscopic state. Solution: die."</text>
+    <text>Though Separatists usually avoid other ships, the one at this beacon appears to be in critical condition, and in desperate need of scrap.</text>
+    <text>A Separatist ship moves in to attack. You aren't sure how you angered them, but it no longer matters.</text>
+    <text>You're hailed by a Separatist ship, who begins to speak a great deal about the works of some dead guy named Shakespeare. He suddenly stops his speech abruptly and attacks!</text>
+</textList>

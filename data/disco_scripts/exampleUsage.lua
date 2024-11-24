@@ -79,7 +79,7 @@ function mde.buildActiveCheck(skill, difficultyValue, initialChoiceText, replace
     return {passive=false, skill=skill, value=difficultyValue, placeholderChoiceText=initialChoiceText, replacementChoiceText=replacementChoiceText, successEventName=successEventName, failureEventName=failureEventName}
 end
 
-
+--TODO this should append a test event I made for this mod.
 --pick something unique for your mod
 --All appends for a given event must have different max_groups.  FM is 620-ish, I claim 640-649.-->
 --!!! copy this line into xmlEventGeneration.lua !!!
@@ -89,13 +89,14 @@ local function appendEvents()
     --copy this into xmlEventGeneration.lua and run it to generate xml stubs. START COPY
     local eventList = {}
     
-    local event1 = mde.buildEvent("STORAGE_CHECK_LAB_FFF_F22_THERMAL_IMAGING")
-    table.insert(event1, mde.buildPassiveCheck("volition", 10, "special storage version", "yuhp")
-    table.insert(event1, mde.buildActiveCheck("reaction_speed", 9, "special storage active", "Try yor lukk",
-            "STORAGE_CHECK_LAB_FFF_F22_THERMAL_IMAGING_REACTION_SUCCES", "STORAGE_CHECK_LAB_FFF_F22_THERMAL_IMAGING_REACTION_FAILURE")
+    local event1 = mde.buildEvent("TEST_HYPERSPACE_QUEST")
+    table.insert(event1, mde.buildPassiveCheck("volition", 10, "mde_passive_1", "yuhp"))
+    table.insert(event1, mde.buildActiveCheck("reaction_speed", 9, "mde_active_1", "Try yor lukk",
+            "MDE_TEST_REACTION_SUCCES", "MDE_TEST_REACTION_FAILURE"))
     table.insert(eventList, event1)
-    --END COPY
     
+    
+    --END COPY
     mde.registerEventList(eventList)
 end
 appendEvents()

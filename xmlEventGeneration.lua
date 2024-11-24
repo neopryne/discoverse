@@ -1,8 +1,9 @@
 local mde = {}
 local MAX_GROUP_START
 
---Don't mess with this stuff
+--Don't mess with this stuff, see the bottom of the script.
 --You should make sure the event names used for active checks are unique to your mod, as usual with events.
+--This script assumes you are appending choices to an existing event.  If you're making a new event, make that first and then add disco choices with this.
 local EVENT_STRING = [[
 <mod:findName type="event" name="%s">
 %s
@@ -92,13 +93,8 @@ MAX_GROUP_START = 210
 
 local function functionBody()
     --PASTE HERE V
-    local eventList = {}
     
-    local event1 = mde.buildEvent("STORAGE_CHECK_LAB_FFF_F22_THERMAL_IMAGING")
-    table.insert(event1, mde.buildPassiveCheck("volition", 10, "special storage version", "yuhp"))
-    table.insert(event1, mde.buildActiveCheck("reaction_speed", 9, "special storage active", "Try yor lukk",
-            "STORAGE_CHECK_LAB_FFF_F22_THERMAL_IMAGING_REACTION_SUCCES", "STORAGE_CHECK_LAB_FFF_F22_THERMAL_IMAGING_REACTION_FAILURE"))
-    table.insert(eventList, event1)
+    
     --PASTE HERE ^
     print(generateXml(eventList))
 end

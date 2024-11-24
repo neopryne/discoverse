@@ -2,6 +2,7 @@ mods.multiverseDiscoEngine = {}
 
 local vter = mods.multiverse.vter
 local lwl = mods.lightweight_lua
+local Brightness = mods.brightness
 
 local global = Hyperspace.Global.GetInstance()
 local soundControl = global:GetSoundControl()
@@ -32,130 +33,151 @@ Content
 Meta content
 QoL / Graphics
 --]]
-local LOG_LEVEL = 3
+local LOG_LEVEL = 5
 local LOG_TAG = "mods.disco.core"
 
-local HUMAN = {INTELLECT=3, logic=0, encylopedia=0, rhetoric=0, drama=0, conceptualization=0, visual_calculus=0, PSYCHE=3, volition=0, inland_empire=0, empathy=0, authority=0, espirit_de_corps=0, suggestion=0, PHYSIQUE=3, endurance=0, pain_threshold=0, physical_instrument=0, electrochemistry=0, shivers=0, half_light=0, MOTORICS=3, hand_eye_coordination=0, perception=0, reaction_speed=0, savoir_faire=0, interfacing=0, composure=0}
-local HUMAN_ENGINEER = {INTELLECT=3, logic=1, encylopedia=1, conceptualization=1, PSYCHE=3, PHYSIQUE=3, MOTORICS=3, hand_eye_coordination=1, interfacing=1, composure=0}
-local HUMAN_MEDIC = {INTELLECT=3, encylopedia=1, PSYCHE=3, empathy=1, PHYSIQUE=3, MOTORICS=3, hand_eye_coordination=1, interfacing=1, composure=1}
-local HUMAN_SOLDIER = {INTELLECT=3, visual_calculus=1, PSYCHE=3, authority=1, espirit_de_corps=1, PHYSIQUE=3, endurance=1, pain_threshold=1, physical_instrument=1, half_light=1, MOTORICS=3, hand_eye_coordination=1, reaction_speed=1}
-local HUMAN_MFK = {INTELLECT=6, PSYCHE=6, PHYSIQUE=6, MOTORICS=6}
-local ENGI = {INTELLECT=4, logic=1, PSYCHE=3, empathy=-1, PHYSIQUE=1, MOTORICS=4, interfacing=1}
-local ENGI_SEPERATIST = {INTELLECT=4, logic=1, PSYCHE=3, espirit_de_corps=-2, PHYSIQUE=1, MOTORICS=4, interfacing=1}
-local ENGI_DEFENDER = {INTELLECT=4, logic=1, PSYCHE=3, PHYSIQUE=2, endurance=2, pain_threshold=2, MOTORICS=4, interfacing=1}
-local ZOLTAN = {INTELLECT=3, PSYCHE=4, PHYSIQUE=2, MOTORICS=3}
-local ROCK = {INTELLECT=3, PSYCHE=3, PHYSIQUE=4, endurance=1, pain_threshold=1, MOTORICS=2, composure=2}
-local ROCK_OUTCAST = {INTELLECT=3, PSYCHE=3, espirit_de_corps=-1, PHYSIQUE=4, endurance=1, pain_threshold=1, MOTORICS=2, composure=2}
-local ROCK_CULTIST = {INTELLECT=3, PSYCHE=3, inland_empire=1, PHYSIQUE=4, endurance=1, pain_threshold=1, MOTORICS=2, composure=2}
-local ROCK_COMMANDO = {INTELLECT=3, PSYCHE=3, espirit_de_corps=1, PHYSIQUE=4, endurance=2, pain_threshold=1, MOTORICS=2, composure=2}
-local ROCK_CRUSADER = {INTELLECT=3, PSYCHE=3, espirit_de_corps=1, PHYSIQUE=4, endurance=2, pain_threshold=1, MOTORICS=2}
-local ROCK_PALADIN = {INTELLECT=3, PSYCHE=5, authority=2, espirit_de_corps=2, PHYSIQUE=6, endurance=3, pain_threshold=1, MOTORICS=2, composure=2}
-local CRYSTAL = {INTELLECT=3, PSYCHE=4, PHYSIQUE=4, MOTORICS=3}
-local CRYSTAL_SENTINAL = {INTELLECT=6, PSYCHE=6, PHYSIQUE=6, MOTORICS=6}
-local CRYSTAL_LIBERATOR = {INTELLECT=6, PSYCHE=6, PHYSIQUE=6, MOTORICS=6}
-local MANTIS = {INTELLECT=2, PSYCHE=2, PHYSIQUE=4, MOTORICS=1}
-local FREE_MANTIS = {INTELLECT=2, PSYCHE=3, PHYSIQUE=4, MOTORICS=1}
-local FREE_MANTIS_CHAOS = {INTELLECT=2, PSYCHE=3, PHYSIQUE=4, MOTORICS=1}
-local FREE_MANTIS_WARLORD = {INTELLECT=3, PSYCHE=3, PHYSIQUE=5, MOTORICS=1}
-local MANTIS_SUZERAIN = {INTELLECT=4, PSYCHE=3, PHYSIQUE=6, MOTORICS=2}
-local MANTIS_BISHOP = {INTELLECT=4, PSYCHE=5, PHYSIQUE=7, MOTORICS=2}
-local SLUG = {INTELLECT=4, PSYCHE=4, PHYSIQUE=3, MOTORICS=3}
-local SLUG_HEKTAR = {INTELLECT=4, PSYCHE=4, PHYSIQUE=3, MOTORICS=3}
-local SLUG_SABOTUER = {INTELLECT=4, PSYCHE=6, PHYSIQUE=5, MOTORICS=6}
-local SLUG_RANGER = {INTELLECT=5, PSYCHE=6, PHYSIQUE=6, MOTORICS=6}
-local SLUG_CLANSMAN = {INTELLECT=5, PSYCHE=5, PHYSIQUE=5, MOTORICS=5}
-local KNIGHT_OF_NIGHTS = {INTELLECT=7, PSYCHE=7, PHYSIQUE=7, MOTORICS=7}
-local ORCHID = {INTELLECT=3, PSYCHE=3, PHYSIQUE=3, electrochemistry=1, MOTORICS=3}
-local ORCHID_PRAETOR = {INTELLECT=3, logic=1, encylopedia=1, rhetoric=1, drama=1, PSYCHE=4, empathy=-1, authority=1, PHYSIQUE=3, pain_threshold=-1, MOTORICS=3, composure=1}
-local ORCHID_CARETAKER = {INTELLECT=3, encylopedia=1, rhetoric=1, conceptualization=1, visual_calculus=1, PSYCHE=3, empathy=1, PHYSIQUE=3, electrochemistry=1, MOTORICS=3, composure=1}
-local VAMPWEED = {INTELLECT=3, PSYCHE=3, PHYSIQUE=3, electrochemistry=1, MOTORICS=3}
-local ORCHID_CULTIVATOR = ORCHID_CARETAKER
-local SHELL = {INTELLECT=5, PSYCHE=3, PHYSIQUE=2, MOTORICS=3}
-local LEECH = {INTELLECT=3, PSYCHE=2, PHYSIQUE=2, MOTORICS=4}
-local LANIUS = {INTELLECT=3, PSYCHE=3, PHYSIQUE=4, MOTORICS=4}
-local GAS_HATCHLING = {INTELLECT=1, PSYCHE=2, PHYSIQUE=1, MOTORICS=0}
-local GAS_ADULT = {INTELLECT=2, PSYCHE=4, PHYSIQUE=5, MOTORICS=1}
-local GAS_WEAVER = {INTELLECT=5, PSYCHE=6, PHYSIQUE=4, MOTORICS=7}
-local GAS_QUEEN = {INTELLECT=6, PSYCHE=7, PHYSIQUE=10, MOTORICS=6}
-local LIZARD = {INTELLECT=2, PSYCHE=3, PHYSIQUE=4, MOTORICS=4}
-local PONY = {INTELLECT=1, PSYCHE=4, PHYSIQUE=5, MOTORICS=4}
-local PONY_TAMED = {INTELLECT=3, PSYCHE=4, PHYSIQUE=5, MOTORICS=4}
-local PONY_CRYSTAL = {INTELLECT=4, PSYCHE=5, PHYSIQUE=5, MOTORICS=5}
-local PONY_ENGI = {INTELLECT=3, PSYCHE=4, PHYSIQUE=6, MOTORICS=4}
-local DEEP_ONE = {INTELLECT=5, PSYCHE=4, PHYSIQUE=5, MOTORICS=4}
-local DEEP_ONE_CULTIST = {INTELLECT=4, PSYCHE=4, PHYSIQUE=5, MOTORICS=4}
-local THE_SCARRED = {INTELLECT=5, PSYCHE=6, PHYSIQUE=6, MOTORICS=4}
-local THE_SCARRED_ASCENDED = {INTELLECT=5, PSYCHE=10, PHYSIQUE=6, MOTORICS=6}
-local ENLIGHTENED_HORROR = {INTELLECT=3, PSYCHE=8, PHYSIQUE=6, MOTORICS=4}
---local PONY_ENGI = {INTELLECT=3, PSYCHE=4, PHYSIQUE=6, MOTORICS=4}
+local CREW_STAT_DEFINITIONS = {
+
+    HUMAN = {INTELLECT=3, logic=0, encylopedia=0, rhetoric=0, drama=0, conceptualization=0, visual_calculus=0, PSYCHE=3, volition=0, inland_empire=0, empathy=0, authority=0, espirit_de_corps=0, suggestion=0, PHYSIQUE=3, endurance=0, pain_threshold=0, physical_instrument=0, electrochemistry=0, shivers=0, half_light=0, MOTORICS=3, hand_eye_coordination=0, perception=0, reaction_speed=0, savoir_faire=0, interfacing=0, composure=0},
+    HUMAN_ENGINEER = {INTELLECT=3, logic=1, encylopedia=1, conceptualization=1, PSYCHE=3, PHYSIQUE=3, MOTORICS=3, hand_eye_coordination=1, interfacing=1, composure=0},
+    HUMAN_MEDIC = {INTELLECT=3, encylopedia=1, PSYCHE=3, empathy=1, PHYSIQUE=3, MOTORICS=3, hand_eye_coordination=1, interfacing=1, composure=1},
+    HUMAN_SOLDIER = {INTELLECT=3, visual_calculus=1, PSYCHE=3, authority=1, espirit_de_corps=1, PHYSIQUE=3, endurance=1, pain_threshold=1, physical_instrument=1, half_light=1, MOTORICS=3, hand_eye_coordination=1, reaction_speed=1},
+    HUMAN_MFK = {INTELLECT=6, PSYCHE=6, PHYSIQUE=6, MOTORICS=6},
+    ENGI = {INTELLECT=4, logic=1, PSYCHE=3, empathy=-1, PHYSIQUE=1, MOTORICS=4, interfacing=1},
+    ENGI_SEPERATIST = {INTELLECT=4, logic=1, PSYCHE=3, espirit_de_corps=-2, PHYSIQUE=1, MOTORICS=4, interfacing=1},
+    ENGI_DEFENDER = {INTELLECT=4, logic=1, PSYCHE=3, PHYSIQUE=2, endurance=2, pain_threshold=2, MOTORICS=4, interfacing=1},
+    ZOLTAN = {INTELLECT=3, PSYCHE=4, PHYSIQUE=2, MOTORICS=3},
+    ROCK = {INTELLECT=3, PSYCHE=3, PHYSIQUE=4, endurance=1, pain_threshold=1, MOTORICS=2, composure=2},
+    ROCK_OUTCAST = {INTELLECT=3, PSYCHE=3, espirit_de_corps=-1, PHYSIQUE=4, endurance=1, pain_threshold=1, MOTORICS=2, composure=2},
+    ROCK_CULTIST = {INTELLECT=3, PSYCHE=3, inland_empire=1, PHYSIQUE=4, endurance=1, pain_threshold=1, MOTORICS=2, composure=2},
+    ROCK_COMMANDO = {INTELLECT=3, PSYCHE=3, espirit_de_corps=1, PHYSIQUE=4, endurance=2, pain_threshold=1, MOTORICS=2, composure=2},
+    ROCK_CRUSADER = {INTELLECT=3, PSYCHE=3, espirit_de_corps=1, PHYSIQUE=4, endurance=2, pain_threshold=1, MOTORICS=2},
+    ROCK_PALADIN = {INTELLECT=3, PSYCHE=5, authority=2, espirit_de_corps=2, PHYSIQUE=6, endurance=3, pain_threshold=1, MOTORICS=2, composure=2},
+    CRYSTAL = {INTELLECT=3, PSYCHE=4, PHYSIQUE=4, MOTORICS=3},
+    CRYSTAL_SENTINAL = {INTELLECT=6, PSYCHE=6, PHYSIQUE=6, MOTORICS=6},
+    CRYSTAL_LIBERATOR = {INTELLECT=6, PSYCHE=6, PHYSIQUE=6, MOTORICS=6},
+    MANTIS = {INTELLECT=2, PSYCHE=2, PHYSIQUE=4, MOTORICS=1},
+    FREE_MANTIS = {INTELLECT=2, PSYCHE=3, PHYSIQUE=4, MOTORICS=1},
+    FREE_MANTIS_CHAOS = {INTELLECT=2, PSYCHE=3, PHYSIQUE=4, MOTORICS=1},
+    FREE_MANTIS_WARLORD = {INTELLECT=3, PSYCHE=3, PHYSIQUE=5, MOTORICS=1},
+    MANTIS_SUZERAIN = {INTELLECT=4, PSYCHE=3, PHYSIQUE=6, MOTORICS=2},
+    MANTIS_BISHOP = {INTELLECT=4, PSYCHE=5, PHYSIQUE=7, MOTORICS=2},
+    SLUG = {INTELLECT=4, PSYCHE=4, PHYSIQUE=3, MOTORICS=3},
+    SLUG_HEKTAR = {INTELLECT=4, PSYCHE=4, PHYSIQUE=3, MOTORICS=3},
+    SLUG_SABOTUER = {INTELLECT=4, PSYCHE=6, PHYSIQUE=5, MOTORICS=6},
+    SLUG_RANGER = {INTELLECT=5, PSYCHE=6, PHYSIQUE=6, MOTORICS=6},
+    SLUG_CLANSMAN = {INTELLECT=5, PSYCHE=5, PHYSIQUE=5, MOTORICS=5},
+    KNIGHT_OF_NIGHTS = {INTELLECT=7, PSYCHE=7, PHYSIQUE=7, MOTORICS=7},
+    ORCHID = {INTELLECT=3, PSYCHE=3, PHYSIQUE=3, electrochemistry=1, MOTORICS=3},
+    ORCHID_PRAETOR = {INTELLECT=3, logic=1, encylopedia=1, rhetoric=1, drama=1, PSYCHE=4, empathy=-1, authority=1, PHYSIQUE=3, pain_threshold=-1, MOTORICS=3, composure=1},
+    ORCHID_CARETAKER = {INTELLECT=3, encylopedia=1, rhetoric=1, conceptualization=1, visual_calculus=1, PSYCHE=3, empathy=1, PHYSIQUE=3, electrochemistry=1, MOTORICS=3, composure=1},
+    VAMPWEED = {INTELLECT=3, PSYCHE=3, PHYSIQUE=3, electrochemistry=1, MOTORICS=3},
+    ORCHID_CULTIVATOR = {INTELLECT=3, encylopedia=1, rhetoric=1, conceptualization=1, visual_calculus=1, PSYCHE=3, empathy=1, PHYSIQUE=3, electrochemistry=1, MOTORICS=3, composure=1},
+    SHELL = {INTELLECT=5, PSYCHE=3, PHYSIQUE=2, electrochemistry=2, MOTORICS=3},
+    SHELL_SCIENTIST = {INTELLECT=6, PSYCHE=3, PHYSIQUE=2, electrochemistry=2, MOTORICS=3},
+    SHELL_MECHANIC = {INTELLECT=5, PSYCHE=3, PHYSIQUE=2, electrochemistry=1, MOTORICS=4},
+    SHELL_GUARDIAN = {INTELLECT=5, PSYCHE=3, PHYSIQUE=5, electrochemistry=2, MOTORICS=3},
+    SHELL_RADIANT = {INTELLECT=5, PSYCHE=5, PHYSIQUE=4, electrochemistry=2, MOTORICS=5},
+    LEECH = {INTELLECT=3, PSYCHE=2, PHYSIQUE=2, MOTORICS=4, composure=-1},
+    AMPERE = {INTELLECT=3, PSYCHE=2, PHYSIQUE=3, MOTORICS=4, composure=-1},
+    SIREN = {INTELLECT=3, PSYCHE=4, inland_empire=2, PHYSIQUE=3, MOTORICS=3},
+    HARPY = {INTELLECT=3, PSYCHE=5, inland_empire=3, PHYSIQUE=4, MOTORICS=3},
+    LANIUS = {INTELLECT=3, PSYCHE=3, PHYSIQUE=4, MOTORICS=4},
+    WELDER = {INTELLECT=3, PSYCHE=3, PHYSIQUE=4, MOTORICS=5},
+    AUGMENTED = {INTELLECT=5, PSYCHE=3, PHYSIQUE=4, MOTORICS=4},
+    GHOST = {INTELLECT=3, PSYCHE=3, PHYSIQUE=3, MOTORICS=3},
+    GHOST_BIG = {INTELLECT=4, PSYCHE=4, PHYSIQUE=5, MOTORICS=3},
+    GAS_HATCHLING = {INTELLECT=1, PSYCHE=2, PHYSIQUE=1, MOTORICS=0},
+    GAS_ADULT = {INTELLECT=2, PSYCHE=4, PHYSIQUE=5, MOTORICS=1},
+    GAS_WEAVER = {INTELLECT=5, PSYCHE=6, PHYSIQUE=4, MOTORICS=7},
+    GAS_VENOM = {INTELLECT=2, PSYCHE=3, PHYSIQUE=4, electrochemistry=2, MOTORICS=4},
+    GAS_QUEEN = {INTELLECT=6, PSYCHE=7, PHYSIQUE=10, MOTORICS=6},
+    LIZARD = {INTELLECT=2, PSYCHE=3, PHYSIQUE=4, MOTORICS=4},
+    PONY = {INTELLECT=1, PSYCHE=4, PHYSIQUE=5, MOTORICS=4},
+    PONY_TAMED = {INTELLECT=3, PSYCHE=4, PHYSIQUE=5, MOTORICS=4},
+    PONY_CRYSTAL = {INTELLECT=4, PSYCHE=5, PHYSIQUE=5, MOTORICS=5},
+    PONY_ENGI = {INTELLECT=3, PSYCHE=4, PHYSIQUE=6, MOTORICS=4},
+    COGNITIVE = {INTELLECT=3, PSYCHE=0, PHYSIQUE=6, MOTORICS=4},
+    COGNITIVE_AUTOMATED = {INTELLECT=3, PSYCHE=4, PHYSIQUE=6, MOTORICS=4},
+    COGNITIVE_ADVANCED = {INTELLECT=8, PSYCHE=0, PHYSIQUE=6, MOTORICS=4},
+    COGNITIVE_ADVANCED_AUTOMATED = {INTELLECT=8, PSYCHE=4, PHYSIQUE=6, MOTORICS=4},
+    OBELISK = {INTELLECT=6, PSYCHE=4, PHYSIQUE=6, MOTORICS=4},
+    OBELISK_ROYAL = {INTELLECT=7, PSYCHE=6, PHYSIQUE=6, physical_instrument=1, MOTORICS=4, composure=3},
+    DEEP_ONE = {INTELLECT=5, PSYCHE=4, PHYSIQUE=5, MOTORICS=4},
+    DEEP_ONE_CULTIST = {INTELLECT=4, PSYCHE=4, PHYSIQUE=5, MOTORICS=4},
+    THE_SCARRED = {INTELLECT=5, PSYCHE=6, PHYSIQUE=6, MOTORICS=4},
+    THE_SCARRED_ASCENDED = {INTELLECT=5, PSYCHE=10, PHYSIQUE=6, MOTORICS=6},
+    ENLIGHTENED_HORROR = {INTELLECT=3, PSYCHE=8, PHYSIQUE=6, MOTORICS=4},
+    --PONY_ENGI = {INTELLECT=3, PSYCHE=4, PHYSIQUE=6, MOTORICS=4},
 
 
 
 
 
---Uniques
-local TULLY = {INTELLECT=7, PSYCHE=7, PHYSIQUE=5, MOTORICS=7}
-local HAYNES = {INTELLECT=9, PSYCHE=7, PHYSIQUE=5, electrochemistry=4, MOTORICS=6, perception=3, interfacing=-1, composure=2}
-local JERRY = {INTELLECT=3, PSYCHE=3, empathy=6, PHYSIQUE=3, MOTORICS=3}
-local JERRY_GUN = {INTELLECT=3, PSYCHE=3, empathy=6, PHYSIQUE=9, electrochemistry=-5, MOTORICS=9}
-local JERRY_PONY = {INTELLECT=3, PSYCHE=3, empathy=6, PHYSIQUE=10, MOTORICS=10} --TODO REPLACE
-local JERRY_PONY_CRYSTAL = {INTELLECT=3, PSYCHE=3, empathy=6, PHYSIQUE=10, MOTORICS=11}
-local ELLIE = {INTELLECT=3, PSYCHE=1, PHYSIQUE=5, MOTORICS=5}
-local STEPHAN = {INTELLECT=3, PSYCHE=4, PHYSIQUE=5, MOTORICS=5}
-local LEAH = {INTELLECT=3, PSYCHE=4, PHYSIQUE=3, MOTORICS=3}
-local TURZIL = {INTELLECT=7, logic=1, encylopedia=1, rhetoric=1, PSYCHE=7, volition=1, authority=2, espirit_de_corps=2, PHYSIQUE=6, electrochemistry=-2, shivers=-2, MOTORICS=7, interfacing=1}
-local DEVORAK = {INTELLECT=4, PSYCHE=6, authority=1, PHYSIQUE=5, endurance=1, pain_threshold=9, physical_instrument=1, half_light=1, MOTORICS=7}
-local ANURAK = {INTELLECT=4, visual_calculus=0, PSYCHE=7, empathy=1, PHYSIQUE=5, electrochemistry=1, MOTORICS=4, composure=2}
-local KAZ = {INTELLECT=5, visual_calculus=2, PSYCHE=5, PHYSIQUE=7, MOTORICS=9} --the greatest thief in the multiverse
-local FREDDY = {INTELLECT=8, PSYCHE=8, PHYSIQUE=6, MOTORICS=6}
-local SYMBIOTE = {INTELLECT=4, PSYCHE=4, PHYSIQUE=5, MOTORICS=2}
-local VORTIGON = {INTELLECT=4, PSYCHE=4, PHYSIQUE=8, MOTORICS=4}
-local TUCO = {INTELLECT=3, PSYCHE=4, PHYSIQUE=6, MOTORICS=3}
-local ARIADNE = {INTELLECT=6, PSYCHE=6, PHYSIQUE=6, MOTORICS=4}
-local RUWEN = {INTELLECT=7, PSYCHE=6, PHYSIQUE=5, MOTORICS=4}
-local DIANESH = {INTELLECT=7, PSYCHE=6, PHYSIQUE=5, MOTORICS=4}
-local OBYN = {INTELLECT=5, PSYCHE=6, PHYSIQUE=6, MOTORICS=4}
-local BILLY = {INTELLECT=6, PSYCHE=6, PHYSIQUE=4, MOTORICS=4}
-local NIGHTS = {INTELLECT=6, PSYCHE=8, PHYSIQUE=6, MOTORICS=6}
-local SLOCKNOG = {INTELLECT=5, PSYCHE=6, PHYSIQUE=5, MOTORICS=6}
-local IRWIN = {INTELLECT=5, PSYCHE=6, PHYSIQUE=7, MOTORICS=5}
-local IRWIN_DEMON = {INTELLECT=5, PSYCHE=8, PHYSIQUE=9, MOTORICS=5}
-local SYLVAN = {INTELLECT=8, PSYCHE=11, PHYSIQUE=10, MOTORICS=9}
-local TONY_SR = {INTELLECT=3, PSYCHE=2, PHYSIQUE=2, endurance=5, MOTORICS=2}--a sad sack of a man
-local TYREDO = {INTELLECT=4, PSYCHE=3, PHYSIQUE=4, MOTORICS=5} --Just copy his stats to the bird to avoid dumb dillution
-local ALKRAM = {INTELLECT=4, PSYCHE=5, PHYSIQUE=6, MOTORICS=7}
-local ALKALI = {INTELLECT=7, PSYCHE=6, PHYSIQUE=4, MOTORICS=6}
-local OOJ_MAJOO = {INTELLECT=5, PSYCHE=7, PHYSIQUE=6, MOTORICS=7}
-local ANNOINTED = {INTELLECT=9, PSYCHE=9, PHYSIQUE=9, MOTORICS=9}
-local BEACON_EATER = {INTELLECT=5, PSYCHE=7, PHYSIQUE=9, MOTORICS=7}
-local DESSIUS = {INTELLECT=7, PSYCHE=9, PHYSIQUE=8, MOTORICS=7}
-local GUNTPUT = {INTELLECT=4, PSYCHE=7, PHYSIQUE=6, MOTORICS=7}
-local METYUNT = {INTELLECT=5, PSYCHE=4, PHYSIQUE=4, MOTORICS=4}
-local WITHER = {INTELLECT=6, PSYCHE=6, PHYSIQUE=6, MOTORICS=3}
-local TYEREL = {INTELLECT=6, PSYCHE=6, PHYSIQUE=6, MOTORICS=5}
-local MAYEB = {INTELLECT=5, encylopedia=1, rhetoric=1, conceptualization=1, visual_calculus=1, PSYCHE=5, empathy=1, PHYSIQUE=3, electrochemistry=1, MOTORICS=4, composure=1}
-local IVAR = {INTELLECT=4, PSYCHE=5, PHYSIQUE=5, MOTORICS=4}
-local THEST = {INTELLECT=6, PSYCHE=10, PHYSIQUE=6, MOTORICS=6}
-local CORBY = {INTELLECT=10, PSYCHE=6, PHYSIQUE=6, MOTORICS=6}
-local WAKESON = {INTELLECT=6, PSYCHE=6, PHYSIQUE=10, MOTORICS=6}
---local PONY =
-local BATTLE_DRONE = {INTELLECT=3, PSYCHE=4, PHYSIQUE=5, MOTORICS=4}
-local BATTLE_DRONE_2 = {INTELLECT=3, PSYCHE=4, PHYSIQUE=7, MOTORICS=5}
-local ION_INTRUDER = {INTELLECT=3, PSYCHE=5, PHYSIQUE=6, MOTORICS=5}
-local REPAIR_DRONE = {INTELLECT=3, PSYCHE=3, PHYSIQUE=3, MOTORICS=4}
-local DOCTOR_DRONE = {INTELLECT=6, PSYCHE=5, PHYSIQUE=3, MOTORICS=5}
-local MANAGER_DRONE = {INTELLECT=4, PSYCHE=3, PHYSIQUE=2, MOTORICS=2}
-local RECON_DRONE = {INTELLECT=2, PSYCHE=2, PHYSIQUE=2, MOTORICS=5}
-local CONSTRUCTOR_DRONE = {INTELLECT=2, PSYCHE=2, PHYSIQUE=3, MOTORICS=4}
-local PRODUCER_DRONE = {INTELLECT=2, PSYCHE=4, PHYSIQUE=3, MOTORICS=2}
-local GRAZIER_DRONE = {INTELLECT=2, PSYCHE=2, PHYSIQUE=5, MOTORICS=2}
-local ATOM_DRONE = {INTELLECT=2, PSYCHE=2, PHYSIQUE=3, physical_instrument=5, MOTORICS=5}
-local DIRECTOR_DRONE = {INTELLECT=6, PSYCHE=5, PHYSIQUE=3, MOTORICS=3}
-local MENDER_DRONE = {INTELLECT=5, PSYCHE=3, PHYSIQUE=3, MOTORICS=7}
-local A5540L3 = {INTELLECT=8, PSYCHE=7, PHYSIQUE=7, MOTORICS=5}
-local GANA_DRONE = {INTELLECT=7, PSYCHE=6, PHYSIQUE=6, MOTORICS=5}
-local ROOMBA = {INTELLECT=2, PSYCHE=2, PHYSIQUE=2, MOTORICS=2}
---local PONY =
+    --Uniques
+    TULLY = {INTELLECT=7, PSYCHE=7, PHYSIQUE=5, MOTORICS=7},
+    HAYNES = {INTELLECT=9, PSYCHE=7, PHYSIQUE=5, electrochemistry=4, MOTORICS=6, perception=3, interfacing=-1, composure=2},
+    JERRY = {INTELLECT=3, PSYCHE=3, empathy=6, PHYSIQUE=3, MOTORICS=3},
+    JERRY_GUN = {INTELLECT=3, PSYCHE=3, empathy=6, PHYSIQUE=9, electrochemistry=-5, MOTORICS=9},
+    JERRY_PONY = {INTELLECT=3, PSYCHE=3, empathy=6, PHYSIQUE=10, MOTORICS=10}, --TODO REPLACE
+    JERRY_PONY_CRYSTAL = {INTELLECT=3, PSYCHE=3, empathy=6, PHYSIQUE=10, MOTORICS=11},
+    ELLIE = {INTELLECT=3, PSYCHE=1, PHYSIQUE=5, MOTORICS=5},
+    STEPHAN = {INTELLECT=3, PSYCHE=4, PHYSIQUE=5, MOTORICS=5},
+    LEAH = {INTELLECT=3, PSYCHE=4, PHYSIQUE=3, MOTORICS=3},
+    TURZIL = {INTELLECT=7, logic=1, encylopedia=1, rhetoric=1, PSYCHE=7, volition=1, authority=2, espirit_de_corps=2, PHYSIQUE=6, electrochemistry=-2, shivers=-2, MOTORICS=7, interfacing=1},
+    DEVORAK = {INTELLECT=4, PSYCHE=6, authority=1, PHYSIQUE=5, endurance=1, pain_threshold=9, physical_instrument=1, half_light=1, MOTORICS=7},
+    ANURAK = {INTELLECT=4, visual_calculus=0, PSYCHE=7, empathy=1, PHYSIQUE=5, electrochemistry=1, MOTORICS=4, composure=2},
+    KAZ = {INTELLECT=5, visual_calculus=2, PSYCHE=5, PHYSIQUE=7, MOTORICS=9}, --the greatest thief in the multiverse
+    FREDDY = {INTELLECT=8, PSYCHE=8, PHYSIQUE=6, MOTORICS=6},
+    SYMBIOTE = {INTELLECT=4, PSYCHE=4, PHYSIQUE=5, MOTORICS=2},
+    VORTIGON = {INTELLECT=4, PSYCHE=4, PHYSIQUE=8, MOTORICS=4},
+    TUCO = {INTELLECT=3, PSYCHE=4, PHYSIQUE=6, MOTORICS=3},
+    ARIADNE = {INTELLECT=6, PSYCHE=6, PHYSIQUE=6, MOTORICS=4},
+    RUWEN = {INTELLECT=7, PSYCHE=6, PHYSIQUE=5, MOTORICS=4},
+    DIANESH = {INTELLECT=7, PSYCHE=6, PHYSIQUE=5, MOTORICS=4},
+    OBYN = {INTELLECT=5, PSYCHE=6, PHYSIQUE=6, MOTORICS=4},
+    BILLY = {INTELLECT=6, PSYCHE=6, PHYSIQUE=4, MOTORICS=4},
+    NIGHTS = {INTELLECT=6, PSYCHE=8, PHYSIQUE=6, MOTORICS=6},
+    SLOCKNOG = {INTELLECT=5, PSYCHE=6, PHYSIQUE=5, MOTORICS=6},
+    IRWIN = {INTELLECT=5, PSYCHE=6, PHYSIQUE=7, MOTORICS=5},
+    IRWIN_DEMON = {INTELLECT=5, PSYCHE=8, PHYSIQUE=9, MOTORICS=5},
+    SYLVAN = {INTELLECT=8, PSYCHE=11, PHYSIQUE=10, MOTORICS=9},
+    TONY_SR = {INTELLECT=3, PSYCHE=2, PHYSIQUE=2, endurance=5, MOTORICS=2},--a sad sack of a man
+    TYREDO = {INTELLECT=4, PSYCHE=3, PHYSIQUE=4, MOTORICS=5}, --Just copy his stats to the bird to avoid dumb dillution
+    ALKRAM = {INTELLECT=4, PSYCHE=5, PHYSIQUE=6, MOTORICS=7},
+    ALKALI = {INTELLECT=7, PSYCHE=6, PHYSIQUE=4, MOTORICS=6},
+    OOJ_MAJOO = {INTELLECT=5, PSYCHE=7, PHYSIQUE=6, MOTORICS=7},
+    ANNOINTED = {INTELLECT=9, PSYCHE=9, PHYSIQUE=9, MOTORICS=9},
+    BEACON_EATER = {INTELLECT=5, PSYCHE=7, PHYSIQUE=9, MOTORICS=7},
+    DESSIUS = {INTELLECT=7, PSYCHE=9, PHYSIQUE=8, MOTORICS=7},
+    GUNTPUT = {INTELLECT=4, PSYCHE=7, PHYSIQUE=6, MOTORICS=7},
+    METYUNT = {INTELLECT=5, PSYCHE=4, PHYSIQUE=4, MOTORICS=4},
+    WITHER = {INTELLECT=6, PSYCHE=6, PHYSIQUE=6, MOTORICS=3},
+    TYEREL = {INTELLECT=6, PSYCHE=6, PHYSIQUE=6, MOTORICS=5},
+    MAYEB = {INTELLECT=5, encylopedia=1, rhetoric=1, conceptualization=1, visual_calculus=1, PSYCHE=5, empathy=1, PHYSIQUE=3, electrochemistry=1, MOTORICS=4, composure=1},
+    IVAR = {INTELLECT=4, PSYCHE=5, PHYSIQUE=5, MOTORICS=4},
+    THEST = {INTELLECT=6, PSYCHE=10, PHYSIQUE=6, MOTORICS=6},
+    CORBY = {INTELLECT=10, PSYCHE=6, PHYSIQUE=6, MOTORICS=6},
+    WAKESON = {INTELLECT=6, PSYCHE=6, PHYSIQUE=10, MOTORICS=6},
+    --PONY =
+    BATTLE_DRONE = {INTELLECT=3, PSYCHE=4, PHYSIQUE=5, MOTORICS=4},
+    BATTLE_DRONE_2 = {INTELLECT=3, PSYCHE=4, PHYSIQUE=7, MOTORICS=5},
+    ION_INTRUDER = {INTELLECT=3, PSYCHE=5, PHYSIQUE=6, MOTORICS=5},
+    REPAIR_DRONE = {INTELLECT=3, PSYCHE=3, PHYSIQUE=3, MOTORICS=4},
+    DOCTOR_DRONE = {INTELLECT=6, PSYCHE=5, PHYSIQUE=3, MOTORICS=5},
+    MANAGER_DRONE = {INTELLECT=4, PSYCHE=3, PHYSIQUE=2, MOTORICS=2},
+    RECON_DRONE = {INTELLECT=2, PSYCHE=2, PHYSIQUE=2, MOTORICS=5},
+    CONSTRUCTOR_DRONE = {INTELLECT=2, PSYCHE=2, PHYSIQUE=3, MOTORICS=4},
+    PRODUCER_DRONE = {INTELLECT=2, PSYCHE=4, PHYSIQUE=3, MOTORICS=2},
+    GRAZIER_DRONE = {INTELLECT=2, PSYCHE=2, PHYSIQUE=5, MOTORICS=2},
+    ATOM_DRONE = {INTELLECT=2, PSYCHE=2, PHYSIQUE=3, physical_instrument=5, MOTORICS=5},
+    DIRECTOR_DRONE = {INTELLECT=6, PSYCHE=5, PHYSIQUE=3, MOTORICS=3},
+    MENDER_DRONE = {INTELLECT=5, PSYCHE=3, PHYSIQUE=3, MOTORICS=7},
+    A5540L3 = {INTELLECT=8, PSYCHE=7, PHYSIQUE=7, MOTORICS=5},
+    GANA_DRONE = {INTELLECT=7, PSYCHE=6, PHYSIQUE=6, MOTORICS=5},
+    ROOMBA = {INTELLECT=2, PSYCHE=2, PHYSIQUE=2, MOTORICS=2}
+    --PONY =
+}
 
 
 
@@ -164,28 +186,28 @@ local ROOMBA = {INTELLECT=2, PSYCHE=2, PHYSIQUE=2, MOTORICS=2}
 CREW_STAT_TABLE = {
     PLAYER={},
     --human has all of the traits for copying purposes, lowercase numbers are modifiers so human has 3s across the board.
-    human=HUMAN,
-    human_humanoid=HUMAN,
-    human_engineer=HUMAN_ENGINEER,
-    human_medic=HUMAN_MEDIC,
-    human_rebel_medic=HUMAN_MEDIC,
-    human_soldier=HUMAN_SOLDIER,
-    human_technician=HUMAN_ENGINEER,
-    human_mfk=HUMAN_MFK,
+    human=CREW_STAT_DEFINITIONS.HUMAN,
+    human_humanoid=CREW_STAT_DEFINITIONS.HUMAN,
+    human_engineer=CREW_STAT_DEFINITIONS.HUMAN_ENGINEER,
+    human_medic=CREW_STAT_DEFINITIONS.HUMAN_MEDIC,
+    human_rebel_medic=CREW_STAT_DEFINITIONS.HUMAN_MEDIC,
+    human_soldier=CREW_STAT_DEFINITIONS.HUMAN_SOLDIER,
+    human_technician=CREW_STAT_DEFINITIONS.HUMAN_ENGINEER,
+    human_mfk=CREW_STAT_DEFINITIONS.HUMAN_MFK,
     human_legion={INTELLECT=7, PSYCHE=7, PHYSIQUE=7,  MOTORICS=7},
     human_legion_pyro={INTELLECT=7, PSYCHE=7, drama=1, PHYSIQUE=7, half_light=1, MOTORICS=7},
-    unique_cyra=HUMAN_MFK,--TODO
-    unique_tully= TULLY,
+    unique_cyra=CREW_STAT_DEFINITIONS.HUMAN_MFK,--TODO
+    unique_tully=CREW_STAT_DEFINITIONS. TULLY,
     unique_vance={INTELLECT=7, PSYCHE=7, PHYSIQUE=5, MOTORICS=7},
-    unique_haynes=HAYNES,
-    unique_jerry=JERRY,
-    unique_jerry_gun=JERRY_GUN,
-    unique_jerry_pony=JERRY_PONY,
-    unique_jerry_pony_crystal=JERRY_PONY_CRYSTAL,
-    unique_leah=LEAH,
-    unique_leah_mfk=HUMAN_MFK,--TODO
-    unique_ellie=ELLIE,
-    unique_ellie_stephan=STEPHAN,
+    unique_haynes=CREW_STAT_DEFINITIONS.HAYNES,
+    unique_jerry=CREW_STAT_DEFINITIONS.JERRY,
+    unique_jerry_gun=CREW_STAT_DEFINITIONS.JERRY_GUN,
+    unique_jerry_pony=CREW_STAT_DEFINITIONS.JERRY_PONY,
+    unique_jerry_pony_crystal=CREW_STAT_DEFINITIONS.JERRY_PONY_CRYSTAL,
+    unique_leah=CREW_STAT_DEFINITIONS.LEAH,
+    unique_leah_mfk=CREW_STAT_DEFINITIONS.HUMAN_MFK,--TODO
+    unique_ellie=CREW_STAT_DEFINITIONS.ELLIE,
+    unique_ellie_stephan=CREW_STAT_DEFINITIONS.STEPHAN,
     unique_ellie_lvl1={INTELLECT=3, PSYCHE=1, PHYSIQUE=5, MOTORICS=5},
     unique_ellie_lvl2={INTELLECT=3, PSYCHE=1, PHYSIQUE=6, MOTORICS=5},
     unique_ellie_lvl3={INTELLECT=3, PSYCHE=0, PHYSIQUE=6, MOTORICS=6},
@@ -194,279 +216,281 @@ CREW_STAT_TABLE = {
     unique_ellie_lvl6={INTELLECT=3, PSYCHE=-3, PHYSIQUE=9, MOTORICS=6},
     human_angel={INTELLECT=6, PSYCHE=7, PHYSIQUE=6, MOTORICS=7},
     --Orchid
-    orchid=ORCHID,
-    orchid_caretaker=ORCHID_CARETAKER,
-    orchid_praetor=ORCHID_PRAETOR,
-    orchid_vampweed=VAMPWEED,
-    orchid_cultivator=ORCHID_CULTIVATOR,
-    unique_tyerel=TYEREL,
-    unique_mayeb=MAYEB,
-    unique_ivar=IVAR,
+    orchid=CREW_STAT_DEFINITIONS.ORCHID,
+    orchid_caretaker=CREW_STAT_DEFINITIONS.ORCHID_CARETAKER,
+    orchid_praetor=CREW_STAT_DEFINITIONS.ORCHID_PRAETOR,
+    orchid_vampweed=CREW_STAT_DEFINITIONS.VAMPWEED,
+    orchid_cultivator=CREW_STAT_DEFINITIONS.ORCHID_CULTIVATOR,
+    unique_tyerel=CREW_STAT_DEFINITIONS.TYEREL,
+    unique_mayeb=CREW_STAT_DEFINITIONS.MAYEB,
+    unique_ivar=CREW_STAT_DEFINITIONS.IVAR,
     --Engi
-    engi=ENGI,
-    engi_separatist=ENGI_SEPERATIST,
-    engi_separatist_nano=ENGI_SEPERATIST,
-    engi_defender=ENGI_DEFENDER,
-    unique_turzil=TURZIL,
+    engi=CREW_STAT_DEFINITIONS.ENGI,
+    engi_separatist=CREW_STAT_DEFINITIONS.ENGI_SEPERATIST,
+    engi_separatist_nano=CREW_STAT_DEFINITIONS.ENGI_SEPERATIST,
+    engi_defender=CREW_STAT_DEFINITIONS.ENGI_DEFENDER,
+    unique_turzil=CREW_STAT_DEFINITIONS.TURZIL,
     --Zoltan
-    zoltan=ZOLTAN,
+    zoltan=CREW_STAT_DEFINITIONS.ZOLTAN,
     zoltan_monk={INTELLECT=3, conceptualization=1, PSYCHE=3, volition=1, inland_empire=2, empathy=1, suggestion=1, PHYSIQUE=3, pain_threshold=1, physical_instrument=1, electrochemistry=0, shivers=1, half_light=-2, MOTORICS=3, composure=2},
     zoltan_peacekeeper={INTELLECT=3, logic=0, PSYCHE=4, inland_empire=-1, PHYSIQUE=3, physical_instrument=1, half_light=1, MOTORICS=3, reaction_speed=1, composure=1},
     zoltan_devotee={INTELLECT=3, rhetoric=1, drama=1, PSYCHE=3, volition=2, PHYSIQUE=3, physical_instrument=1, half_light=1, MOTORICS=3, reaction_speed=1, composure=-1}, --duskbringer
     zoltan_martyr={INTELLECT=3, rhetoric=1, drama=1, PSYCHE=3, volition=2, PHYSIQUE=3, physical_instrument=1, half_light=1, MOTORICS=3, reaction_speed=1, composure=-1},
-    unique_devorak=DEVORAK,
-    unique_anurak=ANURAK,
-    zoltan_osmian=ZOLTAN,--IDK
+    unique_devorak=CREW_STAT_DEFINITIONS.DEVORAK,
+    unique_anurak=CREW_STAT_DEFINITIONS.ANURAK,
+    zoltan_osmian=CREW_STAT_DEFINITIONS.ZOLTAN,--IDK
     --Rock
-    rock=ROCK,
-    rock_outcast=ROCK_OUTCAST,
-    rock_cultist=ROCK_CULTIST,
-    rock_commando=ROCK_COMMANDO,
-    rock_crusader=ROCK_CRUSADER,
-    rock_paladin=ROCK_PALADIN,
-    --rock_elder=,
-    unique_symbiote=SYMBIOTE,
-    unique_vortigon=VORTIGON,
-    unique_tuco=TUCO,
-    unique_ariadne=ARIADNE,
+    rock=CREW_STAT_DEFINITIONS.ROCK,
+    rock_outcast=CREW_STAT_DEFINITIONS.ROCK_OUTCAST,
+    rock_cultist=CREW_STAT_DEFINITIONS.ROCK_CULTIST,
+    rock_commando=CREW_STAT_DEFINITIONS.ROCK_COMMANDO,
+    rock_crusader=CREW_STAT_DEFINITIONS.ROCK_CRUSADER,
+    rock_paladin=CREW_STAT_DEFINITIONS.ROCK_PALADIN,
+    --rock_elder=CREW_STAT_DEFINITIONS.,
+    unique_symbiote=CREW_STAT_DEFINITIONS.SYMBIOTE,
+    unique_vortigon=CREW_STAT_DEFINITIONS.VORTIGON,
+    unique_tuco=CREW_STAT_DEFINITIONS.TUCO,
+    unique_ariadne=CREW_STAT_DEFINITIONS.ARIADNE,
     --Mantis
-    mantis=MANTIS,
-    mantis_suzerain=MANTIS_SUZERAIN,
-    mantis_free=FREE_MANTIS,
-    mantis_free_chaos=FREE_MANTIS_CHAOS,
-    mantis_warlord=FREE_MANTIS_WARLORD,
-    mantis_bishop=MANTIS_BISHOP,
-    unique_kaz=KAZ,
-    unique_freddy=FREDDY,
-    unique_freddy_fedora=FREDDY,
-    unique_freddy_jester=FREDDY,
-    unique_freddy_sombrero=FREDDY,
-    unique_freddy_twohats=FREDDY,
+    mantis=CREW_STAT_DEFINITIONS.MANTIS,
+    mantis_suzerain=CREW_STAT_DEFINITIONS.MANTIS_SUZERAIN,
+    mantis_free=CREW_STAT_DEFINITIONS.FREE_MANTIS,
+    mantis_free_chaos=CREW_STAT_DEFINITIONS.FREE_MANTIS_CHAOS,
+    mantis_warlord=CREW_STAT_DEFINITIONS.FREE_MANTIS_WARLORD,
+    mantis_bishop=CREW_STAT_DEFINITIONS.MANTIS_BISHOP,
+    unique_kaz=CREW_STAT_DEFINITIONS.KAZ,
+    unique_freddy=CREW_STAT_DEFINITIONS.FREDDY,
+    unique_freddy_fedora=CREW_STAT_DEFINITIONS.FREDDY,
+    unique_freddy_jester=CREW_STAT_DEFINITIONS.FREDDY,
+    unique_freddy_sombrero=CREW_STAT_DEFINITIONS.FREDDY,
+    unique_freddy_twohats=CREW_STAT_DEFINITIONS.FREDDY,
     --Crystal
-    crystal=CRYSTAL,--[[
-    crystal_liberator
-    crystal_sentinel
-    unique_ruwen
-    unique_dianesh
-    unique_obyn
-    nexus_obyn_cel
+    crystal=CREW_STAT_DEFINITIONS.CRYSTAL,
+    crystal_liberator=CREW_STAT_DEFINITIONS.CRYSTAL_LIBERATOR,
+    crystal_sentinel=CREW_STAT_DEFINITIONS.CRYSTAL_SENTINAL,
+    unique_ruwen=CREW_STAT_DEFINITIONS.RUWEN,
+    unique_dianesh=CREW_STAT_DEFINITIONS.DIANESH,
+    unique_obyn=CREW_STAT_DEFINITIONS.OBYN,
+    nexus_obyn_cel=CREW_STAT_DEFINITIONS.OBYN,
     --Slug
-    slug=SLUG,
-    slug_hektar=SLUG_HEKTAR,
-    slug_hektar_box=SLUG_HEKTAR,
-    slug_saboteur=SLUG_SABOTUER,
-    slug_clansman=SLUG_CLANSMAN,
-    slug_ranger=SLUG_RANGER,
-    slug_knight=KNIGHT_OF_NIGHTS,
-    unique_billy=BILLY,
-    unique_billy_box=BILLY,
-    unique_nights=NIGHTS,
-    unique_slocknog=SLOCKNOG,
-    unique_irwin=IRWIN,
-    unique_irwin_demon=IRWIN_DEMON,
-    unique_sylvan=SYLVAN,
+    slug=CREW_STAT_DEFINITIONS.SLUG,
+    slug_hektar=CREW_STAT_DEFINITIONS.SLUG_HEKTAR,
+    slug_hektar_box=CREW_STAT_DEFINITIONS.SLUG_HEKTAR,
+    slug_saboteur=CREW_STAT_DEFINITIONS.SLUG_SABOTUER,
+    slug_clansman=CREW_STAT_DEFINITIONS.SLUG_CLANSMAN,
+    slug_ranger=CREW_STAT_DEFINITIONS.SLUG_RANGER,
+    slug_knight=CREW_STAT_DEFINITIONS.KNIGHT_OF_NIGHTS,
+    unique_billy=CREW_STAT_DEFINITIONS.BILLY,
+    unique_billy_box=CREW_STAT_DEFINITIONS.BILLY,
+    unique_nights=CREW_STAT_DEFINITIONS.NIGHTS,
+    unique_slocknog=CREW_STAT_DEFINITIONS.SLOCKNOG,
+    unique_irwin=CREW_STAT_DEFINITIONS.IRWIN,
+    unique_irwin_demon=CREW_STAT_DEFINITIONS.IRWIN_DEMON,
+    unique_sylvan=CREW_STAT_DEFINITIONS.SYLVAN,
     --todo I don't know enough about these, giving them all sylvan stats for now.
-    nexus_sylvan_cel=SYLVAN,
-    nexus_sylvan_gman=SYLVAN,
-    bucket=SYLVAN,
-    sylvanrick=SYLVAN,
-    sylvansans=SYLVAN,
-    saltpapy=SYLVAN,
-    sylvanleah=SYLVAN,
-    sylvanrebel=SYLVAN,
-    dylan=SYLVAN,
-    nexus_pants=SYLVAN,
-    prime=SYLVAN,--TODO
-    sylvan1d=SYLVAN,
-    sylvanclan=SYLVAN,
-    beans=SYLVAN,
+    nexus_sylvan_cel=CREW_STAT_DEFINITIONS.SYLVAN,
+    nexus_sylvan_gman=CREW_STAT_DEFINITIONS.SYLVAN,
+    bucket=CREW_STAT_DEFINITIONS.SYLVAN,
+    sylvanrick=CREW_STAT_DEFINITIONS.SYLVAN,
+    sylvansans=CREW_STAT_DEFINITIONS.SYLVAN,
+    saltpapy=CREW_STAT_DEFINITIONS.SYLVAN,
+    sylvanleah=CREW_STAT_DEFINITIONS.SYLVAN,
+    sylvanrebel=CREW_STAT_DEFINITIONS.SYLVAN,
+    dylan=CREW_STAT_DEFINITIONS.SYLVAN,
+    nexus_pants=CREW_STAT_DEFINITIONS.SYLVAN,
+    prime=CREW_STAT_DEFINITIONS.SYLVAN,--TODO
+    sylvan1d=CREW_STAT_DEFINITIONS.SYLVAN,
+    sylvanclan=CREW_STAT_DEFINITIONS.SYLVAN,
+    beans=CREW_STAT_DEFINITIONS.SYLVAN,
     --Leech
-    leech=LEECH
-    leech_ampere
-    unique_tonysr=TONY_SR
-    unique_tyrdeo=TYREDO
-    unique_tyrdeo_bird=TYREDO
-    unique_alkram=ALKRAM
+    leech=CREW_STAT_DEFINITIONS.LEECH,
+    leech_ampere=CREW_STAT_DEFINITIONS.AMPERE,
+    unique_tonysr=CREW_STAT_DEFINITIONS.TONY_SR,
+    unique_tyrdeo=CREW_STAT_DEFINITIONS.TYREDO,
+    unique_tyrdeo_bird=CREW_STAT_DEFINITIONS.TYREDO,
+    unique_alkram=CREW_STAT_DEFINITIONS.ALKRAM,
     --Siren
-    siren
-    siren_harpy
+    siren=CREW_STAT_DEFINITIONS.SIREN,
+    siren_harpy=CREW_STAT_DEFINITIONS.HARPY,
     --Shell
-    shell
-    shell_scientist
-    shell_mechanic
-    shell_guardian
-    shell_radiant
-    unique_alkali = ALKALI
+    shell=CREW_STAT_DEFINITIONS.SHELL,
+    shell_scientist=CREW_STAT_DEFINITIONS.SHELL_SCIENTIST,
+    shell_mechanic=CREW_STAT_DEFINITIONS.SHELL_MECHANIC,
+    shell_guardian=CREW_STAT_DEFINITIONS.SHELL_GUARDIAN,
+    shell_radiant=CREW_STAT_DEFINITIONS.SHELL_RADIANT,
+    unique_alkali=CREW_STAT_DEFINITIONS.ALKALI,
     --Lanius
-    lanius =
-    lanius_welder
-    lanius_augmented
-    unique_anointed = ANNOINTED
-    unique_eater = BEACON_EATER
+    lanius=CREW_STAT_DEFINITIONS.LANIUS,
+    lanius_welder=CREW_STAT_DEFINITIONS.WELDER,
+    lanius_augmented=CREW_STAT_DEFINITIONS.AUGMENTED,
+    unique_anointed=CREW_STAT_DEFINITIONS.ANNOINTED,
+    unique_eater=CREW_STAT_DEFINITIONS.BEACON_EATER,
     --Ghost
-    phantom
-    phantom_alpha
-    phantom_goul
-    phantom_goul_alpha
-    phantom_mare
-    phantom_mare_alpha
-    phantom_wraith
-    phantom_wraith_alpha
-    unique_dessius = DESSIUS
+    phantom=CREW_STAT_DEFINITIONS.GHOST,
+    phantom_alpha=CREW_STAT_DEFINITIONS.GHOST_BIG,
+    phantom_goul=CREW_STAT_DEFINITIONS.GHOST,
+    phantom_goul_alpha=CREW_STAT_DEFINITIONS.GHOST_BIG,
+    phantom_mare=CREW_STAT_DEFINITIONS.GHOST,
+    phantom_mare_alpha=CREW_STAT_DEFINITIONS.GHOST_BIG,
+    phantom_wraith=CREW_STAT_DEFINITIONS.GHOST,
+    phantom_wraith_alpha=CREW_STAT_DEFINITIONS.GHOST_BIG,
+    unique_dessius=CREW_STAT_DEFINITIONS.DESSIUS,
+    --[[
     gbeleanor
     gbscoleri
     gbslimer
     gbpsych
     gbvinz
     gbzuul
+    --]]
     --Spider
-    spider = GAS_ADULT
-    spider_weaver = GAS_WEAVER
-    spider_hatch = GAS_HATCHLING
-    unique_queen = GAS_QUEEN --El spidro guigante
-    spider_venom
-    spider_venom_chaos
-    tinybug
+    spider=CREW_STAT_DEFINITIONS.GAS_ADULT,
+    spider_weaver=CREW_STAT_DEFINITIONS.GAS_WEAVER,
+    spider_hatch=CREW_STAT_DEFINITIONS.GAS_HATCHLING,
+    unique_queen=CREW_STAT_DEFINITIONS.GAS_QUEEN, --El spidro guigante
+    spider_venom=CREW_STAT_DEFINITIONS.GAS_VENOM,
+    spider_venom_chaosm=CREW_STAT_DEFINITIONS.GAS_VENOM,
+    tinybug=nil,
     --Lizard thing
-    lizard = LIZARD,
-    unique_guntput = GUNTPUT,
-    unique_metyunt = METYUNT,
+    lizard=CREW_STAT_DEFINITIONS.LIZARD,
+    unique_guntput=CREW_STAT_DEFINITIONS.GUNTPUT,
+    unique_metyunt=CREW_STAT_DEFINITIONS.METYUNT,
     --Pony
-    pony = PONY,
-    pony_tamed = PONY_TAMED,
-    ponyc = PONY_CRYSTAL,
-    pony_engi
-    pony_engi_nano
-    pony_engi_chaos
-    pony_engi_nano_chaos
+    pony=CREW_STAT_DEFINITIONS.PONY,
+    pony_tamed=CREW_STAT_DEFINITIONS.PONY_TAMED,
+    ponyc=CREW_STAT_DEFINITIONS.PONY_CRYSTAL,
+    pony_engi=CREW_STAT_DEFINITIONS.PONY_ENGI,
+    pony_engi_nano=CREW_STAT_DEFINITIONS.PONY_ENGI,
+    pony_engi_chaos=CREW_STAT_DEFINITIONS.PONY_ENGI,
+    pony_engi_nano_chaos=CREW_STAT_DEFINITIONS.PONY_ENGI,
     --Cognitive
-    cognitive
-    cognitive_automated
-    cognitive_advanced
-    cognitive_advanced_automated
+    cognitive=CREW_STAT_DEFINITIONS.COGNITIVE,
+    cognitive_automated=CREW_STAT_DEFINITIONS.COGNITIVE_AUTOMATED,
+    cognitive_advanced=CREW_STAT_DEFINITIONS.COGNITIVE_ADVANCED,
+    cognitive_advanced_automated=CREW_STAT_DEFINITIONS.COGNITIVE_ADVANCED_AUTOMATED,
     --todo FR cogs
     --Obelisk
-    obelisk
-    obelisk_royal
-    unique_wither
+    obelisk=CREW_STAT_DEFINITIONS.OBELISK,
+    obelisk_royal=CREW_STAT_DEFINITIONS.OBELISK_ROYAL,
+    unique_wither=CREW_STAT_DEFINITIONS.WITHER,
     -- :)
-    eldritch_cat
+    --[[eldritch_cat
     eldritch_thing
     eldritch_thing_noclone
     eldritch_thing_weak
     gnome--]]
     --Judges
-    unique_judge_thest=THEST,
-    unique_judge_corby=CORBY,
-    unique_judge_wakeson=WAKESON,
+    unique_judge_thest=CREW_STAT_DEFINITIONS.THEST,
+    unique_judge_corby=CREW_STAT_DEFINITIONS.CORBY,
+    unique_judge_wakeson=CREW_STAT_DEFINITIONS.WAKESON,
     --Dronesss
-    a55=A5540L3,
-    gana=GANA_DRONE,
-    battle=ION_INTRUDER,
-    drone_battle=BATTLE_DRONE,--[[
+    a55=CREW_STAT_DEFINITIONS.A5540L3,
+    gana=CREW_STAT_DEFINITIONS.GANA_DRONE,
+    battle=CREW_STAT_DEFINITIONS.ION_INTRUDER,
+    drone_battle=CREW_STAT_DEFINITIONS.BATTLE_DRONE,--[[
     drone_yinyang
     drone_yinyang_chaos
     loot_separatist_1 --idk
-    drone_battle2=BATTLE_DRONE_2,
+    drone_battle2=CREW_STAT_DEFINITIONS.BATTLE_DRONE_2,
     repairboarder
     repair
     divrepair
     butler
-    drone_recon=RECON_DRONE,
-    drone_recon_defense=RECON_DRONE,
-    doctor=DOCTOR_DRONE,
+    drone_recon=CREW_STAT_DEFINITIONS.RECON_DRONE,
+    drone_recon_defense=CREW_STAT_DEFINITIONS.RECON_DRONE,
+    doctor=CREW_STAT_DEFINITIONS.DOCTOR_DRONE,
     surgeon
     surgeon_chaos
     manning
     manningenemy=nil,
     drone_holodrone
     drone_holodrone_chaos--]]
-    drone_vamp_constructor=CONSTRUCTOR_DRONE,
-    drone_vamp_producer=PRODUCER_DRONE,
-    drone_vamp_grazier=GRAZIER_DRONE,
-    mender=MENDER_DRONE,
-    menderr=MENDER_DRONE,
-    director=DIRECTOR_DRONE,
-    atom=ATOM_DRONE,
-    atomr=ATOM_DRONE,
-    roomba=ROOMBA,
+    drone_vamp_constructor=CREW_STAT_DEFINITIONS.CONSTRUCTOR_DRONE,
+    drone_vamp_producer=CREW_STAT_DEFINITIONS.PRODUCER_DRONE,
+    drone_vamp_grazier=CREW_STAT_DEFINITIONS.GRAZIER_DRONE,
+    mender=CREW_STAT_DEFINITIONS.MENDER_DRONE,
+    menderr=CREW_STAT_DEFINITIONS.MENDER_DRONE,
+    director=CREW_STAT_DEFINITIONS.DIRECTOR_DRONE,
+    atom=CREW_STAT_DEFINITIONS.ATOM_DRONE,
+    atomr=CREW_STAT_DEFINITIONS.ATOM_DRONE,
+    roomba=CREW_STAT_DEFINITIONS.ROOMBA,
     --Morph
     blob={INTELLECT=3, PSYCHE=3, PHYSIQUE=3, MOTORICS=3},
-    unique_ooj = OOJ_MAJOO,
-    unique_ooj_love = OOJ_MAJOO,
-    blobhuman=HUMAN,
-    blobzoltan=ZOLTAN,
-    blobrock=ROCK,
-    blobcrystal=CRYSTAL,
-    blobmantis=MANTIS,
-    blobfreemantis=FREE_MANTIS,
-    blobslug=SLUG,
-    bloborchid=ORCHID,
-    blobvampweed=VAMPWEED,
+    unique_ooj=CREW_STAT_DEFINITIONS.OOJ_MAJOO,
+    unique_ooj_love=CREW_STAT_DEFINITIONS.OOJ_MAJOO,
+    blobhuman=CREW_STAT_DEFINITIONS.HUMAN,
+    blobzoltan=CREW_STAT_DEFINITIONS.ZOLTAN,
+    blobrock=CREW_STAT_DEFINITIONS.ROCK,
+    blobcrystal=CREW_STAT_DEFINITIONS.CRYSTAL,
+    blobmantis=CREW_STAT_DEFINITIONS.MANTIS,
+    blobfreemantis=CREW_STAT_DEFINITIONS.FREE_MANTIS,
+    blobslug=CREW_STAT_DEFINITIONS.SLUG,
+    bloborchid=CREW_STAT_DEFINITIONS.ORCHID,
+    blobvampweed=CREW_STAT_DEFINITIONS.VAMPWEED,
     blobswarm=nil,
-    blobshell=SHELL,
-    blobleech=LEECH,
-    blobhatch=GAS_HATCHLING,
-    blobspider=GAS_ADULT,
-    blobweaver=GAS_WEAVER,
-    bloblizard=LIZARD,
-    blobpony=PONY,
-    blobsalt=ROCK,
+    blobshell=CREW_STAT_DEFINITIONS.SHELL,
+    blobleech=CREW_STAT_DEFINITIONS.LEECH,
+    blobhatch=CREW_STAT_DEFINITIONS.GAS_HATCHLING,
+    blobspider=CREW_STAT_DEFINITIONS.GAS_ADULT,
+    blobweaver=CREW_STAT_DEFINITIONS.GAS_WEAVER,
+    bloblizard=CREW_STAT_DEFINITIONS.LIZARD,
+    blobpony=CREW_STAT_DEFINITIONS.PONY,
+    blobsalt=CREW_STAT_DEFINITIONS.ROCK,
     techno={INTELLECT=4, PSYCHE=3, PHYSIQUE=3, MOTORICS=4},
-    technoengi=ENGI,
-    technolanius=LANIUS,
+    technoengi=CREW_STAT_DEFINITIONS.ENGI,
+    technolanius=CREW_STAT_DEFINITIONS.LANIUS,
     --technoancient
     --technoavatar --idk
-    technobattle=BATTLE_DRONE,  --they can do drones i guess
-    technobattle2=BATTLE_DRONE_2,
-    technoboarderion=ION_INTRUDER,
-    technorepair=REPAIR_DRONE,
-    technodoctor=DOCTOR_DRONE,
-    technomanning=MANAGER_DRONE,
-    technorecon=RECON_DRONE,
-    technoconstructor=CONSTRUCTOR_DRONE,
-    technoproducer=PRODUCER_DRONE,
-    technograzier=GRAZIER_DRONE,
-    technoatom=ATOM_DRONE,
-    technodirector=DIRECTOR_DRONE,
-    technomender=MENDER_DRONE,
-    technoa55=A5540L3,
-    technogana=GANA_DRONE,
-    technoroomba=ROOMBA,
+    technobattle=CREW_STAT_DEFINITIONS.BATTLE_DRONE,  --they can do drones i guess
+    technobattle2=CREW_STAT_DEFINITIONS.BATTLE_DRONE_2,
+    technoboarderion=CREW_STAT_DEFINITIONS.ION_INTRUDER,
+    technorepair=CREW_STAT_DEFINITIONS.REPAIR_DRONE,
+    technodoctor=CREW_STAT_DEFINITIONS.DOCTOR_DRONE,
+    technomanning=CREW_STAT_DEFINITIONS.MANAGER_DRONE,
+    technorecon=CREW_STAT_DEFINITIONS.RECON_DRONE,
+    technoconstructor=CREW_STAT_DEFINITIONS.CONSTRUCTOR_DRONE,
+    technoproducer=CREW_STAT_DEFINITIONS.PRODUCER_DRONE,
+    technograzier=CREW_STAT_DEFINITIONS.GRAZIER_DRONE,
+    technoatom=CREW_STAT_DEFINITIONS.ATOM_DRONE,
+    technodirector=CREW_STAT_DEFINITIONS.DIRECTOR_DRONE,
+    technomender=CREW_STAT_DEFINITIONS.MENDER_DRONE,
+    technoa55=CREW_STAT_DEFINITIONS.A5540L3,
+    technogana=CREW_STAT_DEFINITIONS.GANA_DRONE,
+    technoroomba=CREW_STAT_DEFINITIONS.ROOMBA,
     gold={INTELLECT=4, PSYCHE=4, PHYSIQUE=4, MOTORICS=4},
-    goldsoldier = HUMAN_SOLDIER,
-    golddefend = ENGI_DEFENDER,
-    goldcrusader = ROCK_CRUSADER,
-    goldsentinel = CRYSTAL_SENTINAL,
-    goldsuzerain = MANTIS_SUZERAIN,
-    goldwarlord = FREE_MANTIS_WARLORD,
-    goldsabo = SLUG_SABOTUER,
-    goldwelder = LANIUS_WELDER,
-    goldpraetor = ORCHID_PRAETOR,
-    goldcultivator = ORCHID_CULTIVATOR,
+    goldsoldier=CREW_STAT_DEFINITIONS.HUMAN_SOLDIER,
+    golddefend=CREW_STAT_DEFINITIONS.ENGI_DEFENDER,
+    goldcrusader=CREW_STAT_DEFINITIONS.ROCK_CRUSADER,
+    goldsentinel=CREW_STAT_DEFINITIONS.CRYSTAL_SENTINAL,
+    goldsuzerain=CREW_STAT_DEFINITIONS.MANTIS_SUZERAIN,
+    goldwarlord=CREW_STAT_DEFINITIONS.FREE_MANTIS_WARLORD,
+    goldsabo=CREW_STAT_DEFINITIONS.SLUG_SABOTUER,
+    goldwelder=CREW_STAT_DEFINITIONS.LANIUS_WELDER,
+    goldpraetor=CREW_STAT_DEFINITIONS.ORCHID_PRAETOR,
+    goldcultivator=CREW_STAT_DEFINITIONS.ORCHID_CULTIVATOR,
     --goldtoxic --shell
-    goldampere = LEECH_AMPERE,
-    goldroyal = OBELISK_ROYAL,
-    goldqueen = GAS_QUEEN,
+    goldampere=CREW_STAT_DEFINITIONS.LEECH_AMPERE,
+    goldroyal=CREW_STAT_DEFINITIONS.OBELISK_ROYAL,
+    goldqueen=CREW_STAT_DEFINITIONS.GAS_QUEEN,
     --EE?
     --[[
     eldritch_spawn
     --Forgotten Races
-    snowman=SNOWMAN,
-    snowman_chaos=SNOWMAN_CHAOS,
-    fr_lavaman=LAVAMAN,
+    snowman=CREW_STAT_DEFINITIONS.SNOWMAN,
+    snowman_chaos=CREW_STAT_DEFINITIONS.SNOWMAN_CHAOS,
+    fr_lavaman=CREW_STAT_DEFINITIONS.LAVAMAN,
     fr_commonwealth
     fr_spherax
-    fr_unique_billvan=SYLVAN,
-    fr_unique_billvan_box=SYLVAN,
-    fr_unique_sammy=SAMMY,
-    fr_unique_sammy_buff=SAMMY,
+    fr_unique_billvan=CREW_STAT_DEFINITIONS.SYLVAN,
+    fr_unique_billvan_box=CREW_STAT_DEFINITIONS.SYLVAN,
+    fr_unique_sammy=CREW_STAT_DEFINITIONS.SAMMY,
+    fr_unique_sammy_buff=CREW_STAT_DEFINITIONS.SAMMY,
     
     fr_gozer
     fr_CE_avatar
     fr_errorman
-    fr_sylvan_cel=SYLVAN
-    fr_obyn_cel=OBYN
+    fr_sylvan_cel=CREW_STAT_DEFINITIONS.SYLVAN
+    fr_obyn_cel=CREW_STAT_DEFINITIONS.OBYN
     fr_withered
     fr_enhanced
     fr_proto_cognitive
@@ -480,7 +504,7 @@ CREW_STAT_TABLE = {
     fr_specter
     fr_ghostly_drone
     fr_snowman_smart--]]
-    fr_unique_leah_legion=HUMAN_MFK,--EH
+    fr_unique_leah_legion=CREW_STAT_DEFINITIONS.HUMAN_MFK,--EH
     --[[
     fr_reborn_g
     fr_reborn_aleenor
@@ -497,67 +521,67 @@ CREW_STAT_TABLE = {
     fr_reformed_searak
     fr_watcher
     --]]
-    fr_ghost_tully=TULLY,
-    fr_ghost_haynes=HAYNES,
-    fr_ghost_jerry=JERRY,
-    fr_ghost_ellie=ELLIE,
-    fr_ghost_stephan=STEPHAN,
-    fr_ghost_turzil=TURZIL,
-    fr_ghost_devorak=DEVORAK,
-    fr_ghost_anurak=ANURAK,
-    fr_ghost_kaz=KAZ,
-    fr_ghost_freddy=FREDDY,
-    fr_ghost_symbiote=SYMBIOTE,
-    fr_ghost_vortigon=VORTIGON,
-    fr_ghost_tuco=TUCO,
-    fr_ghost_ariadne=ARIADNE,
-    fr_ghost_ruwen=RUWEN,
-    fr_ghost_dianesh=DIANESH,
-    fr_ghost_obyn=OBYN,
-    fr_ghost_billy=BILLY,
-    fr_ghost_billy_box=BILLY,
-    fr_ghost_nights=NIGHTS,
-    fr_ghost_slocknog=SLOCKNOG,
-    fr_ghost_irwin=IRWIN,
-    fr_ghost_sylvan=SYLVAN,
-    fr_ghost_tonysr=TONY_SR,
-    fr_ghost_tyrdeo=TYREDO,
-    fr_ghost_alkram=ALKRAM,
-    fr_ghost_alkali=ALKALI,
-    fr_ghost_ooj=OOJ_MAJOO,
-    fr_ghost_anointed=ANNOINTED,
-    fr_ghost_eater=BEACON_EATER,
-    fr_ghost_dessius=DESSIUS,
-    fr_ghost_queen=GAS_QUEEN,
-    fr_ghost_guntput=GUNTPUT,
-    fr_ghost_metyunt=METYUNT,
-    fr_ghost_wither=WITHER,
+    fr_ghost_tully=CREW_STAT_DEFINITIONS.TULLY,
+    fr_ghost_haynes=CREW_STAT_DEFINITIONS.HAYNES,
+    fr_ghost_jerry=CREW_STAT_DEFINITIONS.JERRY,
+    fr_ghost_ellie=CREW_STAT_DEFINITIONS.ELLIE,
+    fr_ghost_stephan=CREW_STAT_DEFINITIONS.STEPHAN,
+    fr_ghost_turzil=CREW_STAT_DEFINITIONS.TURZIL,
+    fr_ghost_devorak=CREW_STAT_DEFINITIONS.DEVORAK,
+    fr_ghost_anurak=CREW_STAT_DEFINITIONS.ANURAK,
+    fr_ghost_kaz=CREW_STAT_DEFINITIONS.KAZ,
+    fr_ghost_freddy=CREW_STAT_DEFINITIONS.FREDDY,
+    fr_ghost_symbiote=CREW_STAT_DEFINITIONS.SYMBIOTE,
+    fr_ghost_vortigon=CREW_STAT_DEFINITIONS.VORTIGON,
+    fr_ghost_tuco=CREW_STAT_DEFINITIONS.TUCO,
+    fr_ghost_ariadne=CREW_STAT_DEFINITIONS.ARIADNE,
+    fr_ghost_ruwen=CREW_STAT_DEFINITIONS.RUWEN,
+    fr_ghost_dianesh=CREW_STAT_DEFINITIONS.DIANESH,
+    fr_ghost_obyn=CREW_STAT_DEFINITIONS.OBYN,
+    fr_ghost_billy=CREW_STAT_DEFINITIONS.BILLY,
+    fr_ghost_billy_box=CREW_STAT_DEFINITIONS.BILLY,
+    fr_ghost_nights=CREW_STAT_DEFINITIONS.NIGHTS,
+    fr_ghost_slocknog=CREW_STAT_DEFINITIONS.SLOCKNOG,
+    fr_ghost_irwin=CREW_STAT_DEFINITIONS.IRWIN,
+    fr_ghost_sylvan=CREW_STAT_DEFINITIONS.SYLVAN,
+    fr_ghost_tonysr=CREW_STAT_DEFINITIONS.TONY_SR,
+    fr_ghost_tyrdeo=CREW_STAT_DEFINITIONS.TYREDO,
+    fr_ghost_alkram=CREW_STAT_DEFINITIONS.ALKRAM,
+    fr_ghost_alkali=CREW_STAT_DEFINITIONS.ALKALI,
+    fr_ghost_ooj=CREW_STAT_DEFINITIONS.OOJ_MAJOO,
+    fr_ghost_anointed=CREW_STAT_DEFINITIONS.ANNOINTED,
+    fr_ghost_eater=CREW_STAT_DEFINITIONS.BEACON_EATER,
+    fr_ghost_dessius=CREW_STAT_DEFINITIONS.DESSIUS,
+    fr_ghost_queen=CREW_STAT_DEFINITIONS.GAS_QUEEN,
+    fr_ghost_guntput=CREW_STAT_DEFINITIONS.GUNTPUT,
+    fr_ghost_metyunt=CREW_STAT_DEFINITIONS.METYUNT,
+    fr_ghost_wither=CREW_STAT_DEFINITIONS.WITHER,
     --[[
     fr_bonus_augustus
     fr_bonus_augustus_enemy
-    fr_bonus_sally_hatchling = GAS_HATCHLING,
-    fr_bonus_sally_adult = GAS_ADULT,
-    fr_bonus_sally_weaver = GAS_WEAVER,
+    fr_bonus_sally_hatchling=CREW_STAT_DEFINITIONS.GAS_HATCHLING,
+    fr_bonus_sally_adult=CREW_STAT_DEFINITIONS.GAS_ADULT,
+    fr_bonus_sally_weaver=CREW_STAT_DEFINITIONS.GAS_WEAVER,
     fr_bonus_prince
     fr_bonus_prince_jerry
     fr_bonus_tririac
     --]]
     --FR Drones
-    fr_atomc=ATOM_DRONE,
-    fr_menderc=MENDER_DRONE,
-    fr_directorc=DIRECTOR_DRONE,
-    fr_atomw=ATOM_DRONE, --yellow
-    fr_menderw=MENDER_DRONE,
-    fr_directorw=DIRECTOR_DRONE,
+    fr_atomc=CREW_STAT_DEFINITIONS.ATOM_DRONE,
+    fr_menderc=CREW_STAT_DEFINITIONS.MENDER_DRONE,
+    fr_directorc=CREW_STAT_DEFINITIONS.DIRECTOR_DRONE,
+    fr_atomw=CREW_STAT_DEFINITIONS.ATOM_DRONE, --yellow
+    fr_menderw=CREW_STAT_DEFINITIONS.MENDER_DRONE,
+    fr_directorw=CREW_STAT_DEFINITIONS.DIRECTOR_DRONE,
     --pink?
-    fr_ghostly_battledrone=BATTLE_DRONE,
-    fr_ghostly_battledrone_2=BATTLE_DRONE_2,
-    fr_cleo_spawn = nil,
-    fr_technocwdirector=DIRECTOR_DRONE,
-    fr_technocwmender=MENDER_DRONE,
-    fr_technocwatom=ATOM_DRONE,
-    fr_copper_battledrone_1=BATTLE_DRONE,
-    fr_copper_battledrone_2=BATTLE_DRONE_2,
+    fr_ghostly_battledrone=CREW_STAT_DEFINITIONS.BATTLE_DRONE,
+    fr_ghostly_battledrone_2=CREW_STAT_DEFINITIONS.BATTLE_DRONE_2,
+    fr_cleo_spawn=nil,
+    fr_technocwdirector=CREW_STAT_DEFINITIONS.DIRECTOR_DRONE,
+    fr_technocwmender=CREW_STAT_DEFINITIONS.MENDER_DRONE,
+    fr_technocwatom=CREW_STAT_DEFINITIONS.ATOM_DRONE,
+    fr_copper_battledrone_1=CREW_STAT_DEFINITIONS.BATTLE_DRONE,
+    fr_copper_battledrone_2=CREW_STAT_DEFINITIONS.BATTLE_DRONE_2,
     --Diamonds
     --[[
     fr_golden_diamond
@@ -586,38 +610,38 @@ CREW_STAT_TABLE = {
     
     --Darkest Desire
     --Deep Ones
-    deepone=DEEP_ONE,
-    deeponecultist=DEEP_ONE_CULTIST,
-    unique_thescarred=THE_SCARRED,
-    unique_thescarredascended=THE_SCARRED_ASCENDED,
-    enlightened_horror=ENLIGHTENED_HORROR,----like hektar, not doing all these right now.
-    enlightened_horror_a=ENLIGHTENED_HORROR,
-    enlightened_horror_b=ENLIGHTENED_HORROR,
-    enlightened_horror_c=ENLIGHTENED_HORROR,
-    enlightened_horror_ad=ENLIGHTENED_HORROR,
-    enlightened_horror_ae=ENLIGHTENED_HORROR,
-    enlightened_horror_af=ENLIGHTENED_HORROR,
-    enlightened_horror_ag=ENLIGHTENED_HORROR,
-    enlightened_horror_bd=ENLIGHTENED_HORROR,
-    enlightened_horror_be=ENLIGHTENED_HORROR,
-    enlightened_horror_bf=ENLIGHTENED_HORROR,
-    enlightened_horror_bg=ENLIGHTENED_HORROR,
-    enlightened_horror_cd=ENLIGHTENED_HORROR,
-    enlightened_horror_ce=ENLIGHTENED_HORROR,
-    enlightened_horror_cf=ENLIGHTENED_HORROR,
-    enlightened_horror_cg=ENLIGHTENED_HORROR,
-    enlightened_horror_adj=ENLIGHTENED_HORROR,
-    enlightened_horror_aej=ENLIGHTENED_HORROR,
-    enlightened_horror_afj=ENLIGHTENED_HORROR,
-    enlightened_horror_agj=ENLIGHTENED_HORROR,
-    enlightened_horror_bdj=ENLIGHTENED_HORROR,
-    enlightened_horror_bej=ENLIGHTENED_HORROR,
-    enlightened_horror_bfj=ENLIGHTENED_HORROR,
-    enlightened_horror_bgj=ENLIGHTENED_HORROR,
-    enlightened_horror_cdj=ENLIGHTENED_HORROR,
-    enlightened_horror_cej=ENLIGHTENED_HORROR,
-    enlightened_horror_cfj=ENLIGHTENED_HORROR,
-    enlightened_horror_cgj=ENLIGHTENED_HORROR,
+    deepone=CREW_STAT_DEFINITIONS.DEEP_ONE,
+    deeponecultist=CREW_STAT_DEFINITIONS.DEEP_ONE_CULTIST,
+    unique_thescarred=CREW_STAT_DEFINITIONS.THE_SCARRED,
+    unique_thescarredascended=CREW_STAT_DEFINITIONS.THE_SCARRED_ASCENDED,
+    enlightened_horror=CREW_STAT_DEFINITIONS.ENLIGHTENED_HORROR,----like hektar, not doing all these right now.
+    enlightened_horror_a=CREW_STAT_DEFINITIONS.ENLIGHTENED_HORROR,
+    enlightened_horror_b=CREW_STAT_DEFINITIONS.ENLIGHTENED_HORROR,
+    enlightened_horror_c=CREW_STAT_DEFINITIONS.ENLIGHTENED_HORROR,
+    enlightened_horror_ad=CREW_STAT_DEFINITIONS.ENLIGHTENED_HORROR,
+    enlightened_horror_ae=CREW_STAT_DEFINITIONS.ENLIGHTENED_HORROR,
+    enlightened_horror_af=CREW_STAT_DEFINITIONS.ENLIGHTENED_HORROR,
+    enlightened_horror_ag=CREW_STAT_DEFINITIONS.ENLIGHTENED_HORROR,
+    enlightened_horror_bd=CREW_STAT_DEFINITIONS.ENLIGHTENED_HORROR,
+    enlightened_horror_be=CREW_STAT_DEFINITIONS.ENLIGHTENED_HORROR,
+    enlightened_horror_bf=CREW_STAT_DEFINITIONS.ENLIGHTENED_HORROR,
+    enlightened_horror_bg=CREW_STAT_DEFINITIONS.ENLIGHTENED_HORROR,
+    enlightened_horror_cd=CREW_STAT_DEFINITIONS.ENLIGHTENED_HORROR,
+    enlightened_horror_ce=CREW_STAT_DEFINITIONS.ENLIGHTENED_HORROR,
+    enlightened_horror_cf=CREW_STAT_DEFINITIONS.ENLIGHTENED_HORROR,
+    enlightened_horror_cg=CREW_STAT_DEFINITIONS.ENLIGHTENED_HORROR,
+    enlightened_horror_adj=CREW_STAT_DEFINITIONS.ENLIGHTENED_HORROR,
+    enlightened_horror_aej=CREW_STAT_DEFINITIONS.ENLIGHTENED_HORROR,
+    enlightened_horror_afj=CREW_STAT_DEFINITIONS.ENLIGHTENED_HORROR,
+    enlightened_horror_agj=CREW_STAT_DEFINITIONS.ENLIGHTENED_HORROR,
+    enlightened_horror_bdj=CREW_STAT_DEFINITIONS.ENLIGHTENED_HORROR,
+    enlightened_horror_bej=CREW_STAT_DEFINITIONS.ENLIGHTENED_HORROR,
+    enlightened_horror_bfj=CREW_STAT_DEFINITIONS.ENLIGHTENED_HORROR,
+    enlightened_horror_bgj=CREW_STAT_DEFINITIONS.ENLIGHTENED_HORROR,
+    enlightened_horror_cdj=CREW_STAT_DEFINITIONS.ENLIGHTENED_HORROR,
+    enlightened_horror_cej=CREW_STAT_DEFINITIONS.ENLIGHTENED_HORROR,
+    enlightened_horror_cfj=CREW_STAT_DEFINITIONS.ENLIGHTENED_HORROR,
+    enlightened_horror_cgj=CREW_STAT_DEFINITIONS.ENLIGHTENED_HORROR,
     ddnightmare_rift=nil,
     ddnightmare_rift_a=nil,
     ddnightmare_rift_b=nil,
@@ -684,37 +708,37 @@ CREW_STAT_TABLE = {
     disparity_engirainbow_beacon--]]
     
     --Hektar Expansion
-    slug_hektar_elite=SLUG_HEKTAR,--eh
-    modular_dronebattle_base_base=BATTLE_DRONE, --Eventually I'll replace this with individual ones.
-    modular_dronebattle_base_bio=BATTLE_DRONE,
-    modular_dronebattle_base_stun=BATTLE_DRONE,
-    modular_dronebattle_base_lockdown=BATTLE_DRONE,
-    modular_dronebattle_base_pierce=BATTLE_DRONE,
-    modular_dronebattle_base_cooldown=BATTLE_DRONE,
-    modular_dronebattle_accuracy_base=BATTLE_DRONE,
-    modular_dronebattle_accuracy_bio=BATTLE_DRONE,
-    modular_dronebattle_accuracy_stun=BATTLE_DRONE,
-    modular_dronebattle_accuracy_lockdown=BATTLE_DRONE,
-    modular_dronebattle_accuracy_pierce=BATTLE_DRONE,
-    modular_dronebattle_accuracy_cooldown=BATTLE_DRONE,
-    modular_dronebattle_fire_base=BATTLE_DRONE,
-    modular_dronebattle_fire_bio=BATTLE_DRONE,
-    modular_dronebattle_fire_stun=BATTLE_DRONE,
-    modular_dronebattle_fire_lockdown=BATTLE_DRONE,
-    modular_dronebattle_fire_pierce=BATTLE_DRONE,
-    modular_dronebattle_fire_cooldown=BATTLE_DRONE,
-    modular_dronebattle_hull_base=BATTLE_DRONE,
-    modular_dronebattle_hull_bio=BATTLE_DRONE,
-    modular_dronebattle_hull_stun=BATTLE_DRONE,
-    modular_dronebattle_hull_lockdown=BATTLE_DRONE,
-    modular_dronebattle_hull_pierce=BATTLE_DRONE,
-    modular_dronebattle_hull_cooldown=BATTLE_DRONE,
-    modular_dronebattle_power_base=BATTLE_DRONE_2,--battle2
-    modular_dronebattle_power_bio=BATTLE_DRONE_2,
-    modular_dronebattle_power_stun=BATTLE_DRONE_2,
-    modular_dronebattle_power_lockdown=BATTLE_DRONE_2,
-    modular_dronebattle_power_pierce=BATTLE_DRONE_2,
-    modular_dronebattle_power_cooldown=BATTLE_DRONE_2,
+    slug_hektar_elite=CREW_STAT_DEFINITIONS.SLUG_HEKTAR,--eh
+    modular_dronebattle_base_base=CREW_STAT_DEFINITIONS.BATTLE_DRONE, --Eventually I'll replace this with individual ones.
+    modular_dronebattle_base_bio=CREW_STAT_DEFINITIONS.BATTLE_DRONE,
+    modular_dronebattle_base_stun=CREW_STAT_DEFINITIONS.BATTLE_DRONE,
+    modular_dronebattle_base_lockdown=CREW_STAT_DEFINITIONS.BATTLE_DRONE,
+    modular_dronebattle_base_pierce=CREW_STAT_DEFINITIONS.BATTLE_DRONE,
+    modular_dronebattle_base_cooldown=CREW_STAT_DEFINITIONS.BATTLE_DRONE,
+    modular_dronebattle_accuracy_base=CREW_STAT_DEFINITIONS.BATTLE_DRONE,
+    modular_dronebattle_accuracy_bio=CREW_STAT_DEFINITIONS.BATTLE_DRONE,
+    modular_dronebattle_accuracy_stun=CREW_STAT_DEFINITIONS.BATTLE_DRONE,
+    modular_dronebattle_accuracy_lockdown=CREW_STAT_DEFINITIONS.BATTLE_DRONE,
+    modular_dronebattle_accuracy_pierce=CREW_STAT_DEFINITIONS.BATTLE_DRONE,
+    modular_dronebattle_accuracy_cooldown=CREW_STAT_DEFINITIONS.BATTLE_DRONE,
+    modular_dronebattle_fire_base=CREW_STAT_DEFINITIONS.BATTLE_DRONE,
+    modular_dronebattle_fire_bio=CREW_STAT_DEFINITIONS.BATTLE_DRONE,
+    modular_dronebattle_fire_stun=CREW_STAT_DEFINITIONS.BATTLE_DRONE,
+    modular_dronebattle_fire_lockdown=CREW_STAT_DEFINITIONS.BATTLE_DRONE,
+    modular_dronebattle_fire_pierce=CREW_STAT_DEFINITIONS.BATTLE_DRONE,
+    modular_dronebattle_fire_cooldown=CREW_STAT_DEFINITIONS.BATTLE_DRONE,
+    modular_dronebattle_hull_base=CREW_STAT_DEFINITIONS.BATTLE_DRONE,
+    modular_dronebattle_hull_bio=CREW_STAT_DEFINITIONS.BATTLE_DRONE,
+    modular_dronebattle_hull_stun=CREW_STAT_DEFINITIONS.BATTLE_DRONE,
+    modular_dronebattle_hull_lockdown=CREW_STAT_DEFINITIONS.BATTLE_DRONE,
+    modular_dronebattle_hull_pierce=CREW_STAT_DEFINITIONS.BATTLE_DRONE,
+    modular_dronebattle_hull_cooldown=CREW_STAT_DEFINITIONS.BATTLE_DRONE,
+    modular_dronebattle_power_base=CREW_STAT_DEFINITIONS.BATTLE_DRONE_2,--battle2
+    modular_dronebattle_power_bio=CREW_STAT_DEFINITIONS.BATTLE_DRONE_2,
+    modular_dronebattle_power_stun=CREW_STAT_DEFINITIONS.BATTLE_DRONE_2,
+    modular_dronebattle_power_lockdown=CREW_STAT_DEFINITIONS.BATTLE_DRONE_2,
+    modular_dronebattle_power_pierce=CREW_STAT_DEFINITIONS.BATTLE_DRONE_2,
+    modular_dronebattle_power_cooldown=CREW_STAT_DEFINITIONS.BATTLE_DRONE_2,
     
     --ARI_MECH  I don't know what the fuck that thing is
     --[[
@@ -755,15 +779,15 @@ CREW_STAT_TABLE = {
     fff_f22={INTELLECT=3, logic=0, encylopedia=0, rhetoric=0, drama=0, conceptualization=0, visual_calculus=1, PSYCHE=2, volition=0, inland_empire=0, empathy=0, authority=0, espirit_de_corps=3, suggestion=0, PHYSIQUE=4, endurance=0, pain_threshold=1, physical_instrument=0, electrochemistry=0, shivers=0, half_light=-1, MOTORICS=2, hand_eye_coordination=-1, perception=0, reaction_speed=8, savoir_faire=0, interfacing=0, composure=-2},
     fff_buffer={INTELLECT=3, logic=0, encylopedia=0, rhetoric=-1, drama=3, conceptualization=3, visual_calculus=0, PSYCHE=4, volition=0, inland_empire=0, empathy=0, authority=0, espirit_de_corps=0, suggestion=0, PHYSIQUE=3, endurance=0, pain_threshold=0, physical_instrument=0, electrochemistry=0, shivers=0, half_light=0, MOTORICS=3, hand_eye_coordination=0, perception=0, reaction_speed=0, savoir_faire=0, interfacing=0, composure=1},
     fff_omen={INTELLECT=3, logic=0, encylopedia=0, rhetoric=0, drama=0, conceptualization=0, visual_calculus=0, PSYCHE=3, volition=1, inland_empire=4, empathy=0, authority=0, espirit_de_corps=0, suggestion=0, PHYSIQUE=3, endurance=2, pain_threshold=1, physical_instrument=0, electrochemistry=0, shivers=2, half_light=0, MOTORICS=1, hand_eye_coordination=0, perception=4, reaction_speed=0, savoir_faire=0, interfacing=3, composure=3},
-    easter_brick=ROCKMAN,
-    easter_coomer=HUMAN_SOLDIER,
-    easter_bubby=HUMAN_ENGINEER,
-    easter_tommy=HUMAN_MEDIC,
-    easter_sunkist=PONY,
-    easter_angel=GAS_QUEEN
+    easter_brick=CREW_STAT_DEFINITIONS.ROCKMAN,
+    easter_coomer=CREW_STAT_DEFINITIONS.HUMAN_SOLDIER,
+    easter_bubby=CREW_STAT_DEFINITIONS.HUMAN_ENGINEER,
+    easter_tommy=CREW_STAT_DEFINITIONS.HUMAN_MEDIC,
+    easter_sunkist=CREW_STAT_DEFINITIONS.PONY,
+    easter_angel=CREW_STAT_DEFINITIONS.GAS_QUEEN
 }
 --[[
-{INTELLECT=3, logic=0, encylopedia=0, rhetoric=0, drama=0, conceptualization=0, visual_calculus=0, PSYCHE=3, volition=0, inland_empire=0, empathy=0, authority=0, espirit_de_corps=0, suggestion=0, PHYSIQUE=3, endurance=0, pain_threshold=0, physical_instrument=0, electrochemistry=0, shivers=0, half_light=0, MOTORICS=3, hand_eye_coordination=0, perception=0, reaction_speed=0, savoir_faire=0, interfacing=0, composure=0},
+{INTELLECT=3, logic=0, encylopedia=0, rhetoric=0, drama=0, conceptualization=0, visual_calculus=0, PSYCHE=3, volition=0, inland_empire=0, empathy=0, authority=0, espirit_de_corps=0, suggestion=0, PHYSIQUE=3, endurance=0, pain_threshold=0, physical_instrument=0, electrochemistry=0, shivers=0, half_light=0, MOTORICS=3, hand_eye_coordination=0, perception=0, reaction_speed=0, savoir_faire=0, interfacing=0, composure=0}
 --]]
 
 
@@ -819,7 +843,7 @@ local s_INTELLECT={name="Intellect", internalName="INTELLECT"}
 local s_PSYCHE={name="Psyche", internalName="PSYCHE"}
 local s_PHYSIQUE={name="Physique", internalName="PHYSIQUE"}
 local s_MOTORICS={name="Motorics", internalName="MOTORICS"}
---Getter methods to preserve final values.
+--Getter methods to preserve final values.  I thinik I can getterid of them
 function mods.multiverseDiscoEngine.KEY_LOGIC() return s_logic.internalName end
 function mods.multiverseDiscoEngine.KEY_ENCYLOPEDIA() return s_encylopedia.internalName end
 function mods.multiverseDiscoEngine.KEY_RHETORIC() return s_rhetoric.internalName end
@@ -895,17 +919,11 @@ local TRAIT_DEFINITIONS = {
         composure={category=s_MOTORICS, definition=s_composure},
     }
 
+--Earcons pending check results
+local queuedCheckAVList = {}
 
-
-local queuedCheckAVList = {STORAGE_CHECK_LAB_FFF_F22_THERMAL_IMAGING_REACTION_SUCCES={success=true, skill=s_reaction_speed},
-        STORAGE_CHECK_LAB_FFF_F22_THERMAL_IMAGING_REACTION_FAILURE={success=false, skill=s_reaction_speed}}
-    
-    
-
-local DISCO_EVENTS_LIST = {
-    STORAGE_CHECK_LAB_FFF_F22_THERMAL_IMAGING={
-        {og_text="special storage version", passive=true, skill=s_volition, value=10, text="yuhp"}, 
-        {og_text="special storage active", passive=false, skill=s_reaction_speed, value=9, text="Try yor lukk", successEventName="STORAGE_CHECK_LAB_FFF_F22_THERMAL_IMAGING_REACTION_SUCCES", failureEventName="STORAGE_CHECK_LAB_FFF_F22_THERMAL_IMAGING_REACTION_FAILURE"}}}
+--Registered events
+local DISCO_EVENTS_LIST = {}
 
 
 local function calculate_probabilities(num_dice, sides)
@@ -1032,11 +1050,13 @@ local function getSpeciesStat(species, statName)
     if (stat == nil) then
         stat = 0
     end
-    local statCategory = TRAIT_DEFINITIONS[statName]
+    local statCategory = TRAIT_DEFINITIONS[statName].category.internalName
     local mainStat = crewStats[statCategory]
     if (mainStat == nil) then
+        lwl.logError(LOG_TAG, "Main stat for "..species.." was nil!"..statCategory, LOG_LEVEL)
         mainStat = 0
     end
+    lwl.logInfo(LOG_TAG, statName.." for "..species..": "..mainStat.."+"..stat, LOG_LEVEL)
     return mainStat + stat
 end
 
@@ -1064,7 +1084,7 @@ local function getSumStat(statName)
     end
     
     --Then add your captain values
-    valueSum = valueSum + getSpeciesStat("PLAYER", statName)--currently always zero, might add later.
+    --valueSum = valueSum + getSpeciesStat("PLAYER", statName)--currently always zero, might add later.
     valueSum = valueSum + getAutoShipStat(statName)
     return valueSum
 end
@@ -1075,11 +1095,9 @@ local function getAverageStat(statName)
     return totalStats / (numCrew + 1) --+2 if I include the captain at some point
 end
 
---
 local function getStat(statName)
     return getAverageStat(statName)
 end
-
 
 --As a baseline, you have a 4332 statblock randomly assigned with one proficiency as Captain.  So player stats should start off with nothing.  Don't call this.
 --Eventually I might define ship-specific bonuses that also scale with reactor.  This version is outmoded though.
@@ -1100,25 +1118,32 @@ local function activeCheck(statName, amount)
     local secondDie = math.random(1,6)
     local statValue = getStat(statName)
     local totalValue = firstDie + secondDie + statValue
-    print("Active check: ", statName, " ", amount, " Rolls ", firstDie, secondDie, statValue, totalValue)
+    --print("Active check: ", statName, " ", amount, " Rolls ", firstDie, secondDie, statValue, totalValue)
     --Snakeyes always fails.  Boxcars always succeeds.
-    if (firstDie == 1 and secondDie == 1) then
+    if (totalValue == 2) then
         return false
-    elseif (firstDie == 6 and secondDie == 6) then
+    elseif (totalValue == 12) then
         return true
     end
     return (totalValue >= amount)
 end
 
 local function passiveCheck(statName, amount)
-    print("Passive check: ", statName, " ", amount, " Value ", (getStat(statName) + 6))
+    --print("Passive check: ", statName, " ", amount, " Value ", (getStat(statName) + 6))
     return (getStat(statName) + 6 >= amount)
 end
 
+local CURRENT_CARD
+local function cleanUpCards()
+    if (CURRENT_CARD ~= nil) then
+        Brightness.destroy_particle(CURRENT_CARD)
+    end
+end
 
 local function renderCard(skill)
-    --todo brightness, needs to have a global option.
-    --these should dismiss the start of each skill check.
+    cleanUpCards()
+    --Time doesn't tick on this layer while events are up.
+    CURRENT_CARD = Brightness.create_particle("particles/attributes/"..skill.internalName, 1, 0.01, Hyperspace.Pointf(990, 330), 0, nil, "MOUSE_CONTROL_PRE")
 end
 
 local function playPassiveSuccess(check)
@@ -1136,6 +1161,20 @@ local function playPassiveSuccess(check)
     end
 end
 
+local function renderCheckResult(locationEvent)
+    local check = queuedCheckAVList[locationEvent.eventName]
+    --print("renderCheckResult ", check)
+    if check ~= nil then
+        if (check.success) then
+            soundControl:PlaySoundMix("disco_check_success", 5, false)
+        else
+            soundControl:PlaySoundMix("disco_check_fail", 5, false)
+        end
+        renderCard(check.skill)
+    end
+    queuedCheckAVList = {}
+end
+
 --attribute values for guns?
 --Lua button to check your attributes
 --lua events that pop up out of combat
@@ -1151,6 +1190,7 @@ end
 
 local function activeText(skillCheck)
     local successChance = probability_greater_than(2, 6, skillCheck.value - getStat(skillCheck.skill.internalName))
+    successChance = math.max(3, math.min(successChance, 97)) --Bounded by crits
     return "["..skillCheck.skill.name.." - "..CHECK_DIFFICULTY_NAMES[skillCheck.value].." "..skillCheck.value..", "..successChance.."%] -- "..skillCheck.text
 end
 
@@ -1158,21 +1198,24 @@ end
 local function appendChoices(locationEvent)
     local skillChecks = DISCO_EVENTS_LIST[locationEvent.eventName]
     if skillChecks == nil then return end
+    print("Check: ",lwl.dumpObject(skillChecks))
     local choices = locationEvent:GetChoices()
     --find the associated entry for each choice and apply it.
     for i = 1,#skillChecks do --iterate over choices, replace keywords with strings.
         local skillCheck = skillChecks[i]
+        print("Check: ",lwl.dumpObject(skillCheck))
         --todo check av nonsense.  At very least audio + printing the result.
         local activeSuccess = activeCheck(skillCheck.skill.internalName, skillCheck.value)
         local passiveSuccess = true--passiveCheck(skillCheck.skill.internalName, skillCheck.value)
         if (skillCheck.passive) then
-            print("passive check found.")
+            --print("passive check found.")
             for choice in vter(choices) do
-                print(choice.text.data, skillCheck.og_text, choice.text.data == skillCheck.og_text, passiveSuccess)
-                print("Successp? ", passiveSuccess and (choice.text.data == skillCheck.og_text))
+                --print(choice.text.data, skillCheck.og_text, choice.text.data == skillCheck.og_text, passiveSuccess)
+                --print("Successp? ", passiveSuccess and (choice.text.data == skillCheck.og_text))
                 if (choice.text.data == skillCheck.og_text) then
                     if (passiveSuccess) then
                         playPassiveSuccess(skillCheck)
+                        renderCard(skillCheck.skill)
                         choice.requirement.blue = true
                         choice.text.data = passiveText(skillCheck)
                         choice.requirement.min_level = 1
@@ -1182,16 +1225,16 @@ local function appendChoices(locationEvent)
                 end
             end
         else --active
-            print("active check found.")
+            --print("active check found.")
             queuedCheckAVList[skillCheck.successEventName] = {success=true, skill=skillCheck.skill}
             queuedCheckAVList[skillCheck.failureEventName] = {success=false, skill=skillCheck.skill}
             for choice in vter(choices) do
-                print(choice.text.data, skillCheck.og_text, choice.text.data == skillCheck.og_text)
+                --print(choice.text.data, skillCheck.og_text, choice.text.data == skillCheck.og_text)
                 if (choice.text.data == skillCheck.og_text) then
                     --These ones always show up, and it's a matter of if it succeeds.  Ideally I would't have to do this in xml, it takes two events for each active check.
                     choice.text.data = activeText(skillCheck)
                     shouldDisplay = (activeSuccess == choice.requirement.blue)
-                    print("Success? ", activeSuccess, choice.requirement.blue, shouldDisplay)
+                    --print("Success? ", activeSuccess, choice.requirement.blue, shouldDisplay)
                     if (shouldDisplay) then
                         --todo somehow make a trigger for when you select this.
                         choice.requirement.blue = true
@@ -1209,54 +1252,75 @@ end
 --The events need to be defined in XML, which isn't ideal, but it works.
 --Active checks need two xml events, one will be disabled based on the check result.  Blue value indicates if it is for a success or not.
 --max_group must be different for each option for an event.  I'm using the 640 block, forgemaster uses 620-ish, pick something for yourself if you're using this.
-
 --Every check is a red check here.
 
+--[[
+    See example usage file
 
-local function renderCheckResult(locationEvent)
-    local check = queuedCheckAVList[locationEvent.eventName]
-    --print("renderCheckResult ", check)
-    if check ~= nil then
-        if (check.success) then
-            soundControl:PlaySoundMix("disco_check_success", 5, false)
-        else
-            soundControl:PlaySoundMix("disco_check_fail", 5, false)
-        end
-        renderCard(check.skill)
-    end
-    queuedCheckAVList = {}
-end
 
+
+--]]
 
 --Should only be called with events created by mods.multiverseDiscoEngine.buildEvent
 function mods.multiverseDiscoEngine.registerEvent(event)
-    if (DISCO_EVENTS_LIST[event.eventName] == nil) then
-        DISCO_EVENTS_LIST[event.eventName] = event
+    if (DISCO_EVENTS_LIST[event.name] == nil) then
+        DISCO_EVENTS_LIST[event.name] = event
+    else
+        --append checks to existing event.
+        lwl.logInfo(TAG, "Event "..event.name.." already exists, appending.", LOG_LEVEL)
+        for i = 1,#event do
+            table.insert(DISCO_EVENTS_LIST[event.eventName], event[i])
+        end
     end
+    print(lwl.dumpObject(DISCO_EVENTS_LIST))
 end
 
---Constructs an event with a single skill check you can register in the global table.  You also need to make a matching XML choice.
+--Constructs an event you can register in the global table after adding checks.  You also need to make a matching XML choice.
 --Choices are located by their text, so you will need to put something unique there, and replace it with what you actually want people to see
 --skill is mde.KEY_[SKILL]()
---Do not edit the values returned by this.  If you need to add more choices, use appendCheck.
-function mods.multiverseDiscoEngine.buildEvent(eventName, initialChoiceText, isPassive, skill, value, replacementChoiceText)
-    local event = {name=eventName, {}}
-    mods.multiverseDiscoEngine.appendCheck(event, initialChoiceText, isPassive, skill, difficultyValue, replacementChoiceText)
+--Do not edit the values returned by this with anything besides appendPassiveCheck() and appendActiveCheck().
+function mods.multiverseDiscoEngine.buildEvent(eventName)
+    return {name=eventName}
 end
 
 --Use this if you want to add multiple checks to a single event.  Remember, the XML max_groups must all be different or they won't show up.
---todo account for multiple things adding to the same event.  Not the same check, those must be defined for each mod.
-function mods.multiverseDiscoEngine.appendCheck(event, initialChoiceText, isPassive, skill, difficultyValue, replacementChoiceText)
-    local newCheck = {og_text=initialChoiceText, passive=isPassive, skill=TRAIT_DEFINITIONS[skill].definition, value=difficultyValue, text=replacementChoiceText}
-    table.insert(event[1], newCheck)
+--event must be generated by mods.multiverseDiscoEngine.buildEvent()
+--TODO account for multiple things adding to the same event.  Not the same check, those must be defined for each mod.  Right now they'd clobber each other.
+function mods.multiverseDiscoEngine.appendPassiveCheck(event, initialChoiceText, skill, difficultyValue, replacementChoiceText)
+    print(skill)
+    local traitDef = TRAIT_DEFINITIONS[skill]
+    local skilDef = traitDef.definition
+    print(skilDef.name)
+    local newCheck = {og_text=initialChoiceText, passive=true, skill=skilDef, value=difficultyValue, text=replacementChoiceText}
+    table.insert(event, newCheck)
     return event
 end
 
+function mods.multiverseDiscoEngine.appendActiveCheck(event, initialChoiceText, skill, difficultyValue, replacementChoiceText, successEventName, failureEventName)
+    local newCheck = {og_text=initialChoiceText, passive=false, skill=TRAIT_DEFINITIONS[skill].definition, value=difficultyValue, text=replacementChoiceText, successEventName=successEventName, failureEventName=failureEventName}
+    table.insert(event, newCheck)
+    return event
+end
 
+--[[
+    Add new crew you've made to the disco stat table.  You can also use this to overwrite existing crew's values if you want with the optional force argument.
+    Basic crew are around 12-13 major stat points, elite crew around 16-22, super elite 24-28, and uniques vary wildly.  You can look at the existing table for examples.
+    This is just a guideline, and if there's something you want your crew to be really good at, go for it, because it's going to get diluted by all the other crew onboard.
+
+    Stat block format:
+    {INTELLECT=3, logic=0, encylopedia=0, rhetoric=0, drama=0, conceptualization=0, visual_calculus=0, PSYCHE=3, volition=0, inland_empire=0, empathy=0, authority=0, espirit_de_corps=0, suggestion=0, PHYSIQUE=3, endurance=0, pain_threshold=0, physical_instrument=0, electrochemistry=0, shivers=0, half_light=0, MOTORICS=3, hand_eye_coordination=0, perception=0, reaction_speed=0, savoir_faire=0, interfacing=0, composure=0}
+--]]
+function mods.multiverseDiscoEngine.appendCrew(crewName, statBlock, force)
+    if (not force and CREW_STAT_TABLE[crewName] ~= nil) then
+        lwl.logWarn(TAG, crewName.." is already defined, skipping.", LOG_LEVEL)
+        return
+    end
+    CREW_STAT_TABLE[crewName] = statBlock
+end
+
+--[[ Main Event Loop ]]--
 script.on_internal_event(Defines.InternalEvents.PRE_CREATE_CHOICEBOX, function(locationEvent)
-        --this should go in its own file for exensibility
-        --print("pre event ", locationEvent.eventName)
-        --lwl.printEvent(locationEvent)
+        cleanUpCards()
         renderCheckResult(locationEvent)
         appendChoices(locationEvent)
     end)

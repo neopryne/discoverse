@@ -2,6 +2,7 @@
 
 <FTL>
 	<mod:findLike type="scripts">
+		<mod-append:script>data/disco_scripts/staticDefs.lua</mod-append:script>
 		<mod-append:script>data/disco_scripts/discoEngine.lua</mod-append:script>
 		<mod-append:script>data/disco_scripts/exampleUsage.lua</mod-append:script>
 	</mod:findLike>

@@ -3,7 +3,7 @@
 <!--All appends for a given event must have different max_groups.  FM is 620-ish, I claim 640-649.-->
 <mod:findName type="event" name="TEST_HYPERSPACE_QUEST">
 	<!--Passive Check-->
-	<mod-append:choice req="pilot" lvl="1" max_group="640" blue="false">
+	<mod-append:choice req="pilot" lvl="1" max_group="640" blue="false" hidden="true">
 		<text>mde_passive_1</text>
 		<event>
 			<text>you got there my man</text>
@@ -13,7 +13,7 @@
 		</event>
 	</mod-append:choice>
 	<!--Active Check-->
-	<mod-append:choice req="pilot" lvl="1" max_group="641" blue="true">
+	<mod-append:choice req="pilot" lvl="1" max_group="641" blue="true" hidden="true">
 		<text>mde_active_1</text>
 		<event name="MDE_TEST_REACTION_SUCCES">
 			<text>winner WIUNNER winar wirnarg such a large weapon hung on your hull."</text>
@@ -22,7 +22,7 @@
 			</item_modify>
 		</event>
 	</mod-append:choice>
-	<mod-append:choice req="pilot" lvl="1" max_group="642" blue="false">
+	<mod-append:choice req="pilot" lvl="1" max_group="642" blue="false" hidden="true">
 		<text>mde_active_1</text>
 		<event name="MDE_TEST_REACTION_FAILURE">
 			<text>oh no *ugh(* on hung on your hull."</text>

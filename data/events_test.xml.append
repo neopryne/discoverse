@@ -15,7 +15,7 @@
 	<!--Active Check-->
 	<mod-append:choice req="pilot" lvl="1" max_group="641" blue="true" hidden="true">
 		<text>mde_active_1</text>
-		<event name="MDE_TEST_REACTION_SUCCES">
+		<event name="MDE_TEST_REACTION_SUCCESS">
 			<text>winner WIUNNER winar wirnarg such a large weapon hung on your hull."</text>
 			<item_modify>
 				<item type="scrap" min="45" max="78"/>

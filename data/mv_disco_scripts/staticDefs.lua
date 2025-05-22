@@ -823,12 +823,13 @@ dvsd.s_savoir_faire={name="Savoir Faire", internalName="savoir_faire"} --cloakin
 dvsd.s_interfacing={name="Interfacing", internalName="interfacing"} --hacking bonus
 dvsd.s_composure={name="Composure", internalName="composure"} --system resist %
 
-dvsd.s_INTELLECT={name="Intellect", internalName="INTELLECT", color=Graphics.GL_Color(.447, .592, .82, 1)}
-dvsd.s_PSYCHE={name="Psyche", internalName="PSYCHE", color=Graphics.GL_Color(.537, .486, .754, 1)}
-dvsd.s_PHYSIQUE={name="Physique", internalName="PHYSIQUE", color=Graphics.GL_Color(.682, .188, .258, 1)}
-dvsd.s_MOTORICS={name="Motorics", internalName="MOTORICS", color=Graphics.GL_Color(.792, .635, .227, 1)}
+dvsd.s_INTELLECT={name="Intellect", internalName="INTELLECT", color=Graphics.GL_Color(.447, .592, .82, 1), eventColor="1C5CC8"}
+dvsd.s_PSYCHE={name="Psyche", internalName="PSYCHE", color=Graphics.GL_Color(.537, .486, .754, 1), eventColor="897CC0"}
+dvsd.s_PHYSIQUE={name="Physique", internalName="PHYSIQUE", color=Graphics.GL_Color(.682, .188, .258, 1), eventColor="AE3042"}
+dvsd.s_MOTORICS={name="Motorics", internalName="MOTORICS", color=Graphics.GL_Color(.792, .635, .227, 1), eventColor="E8C744"}
 
 dvsd.CHECK_DIFFICULTY_NAMES = {nil, nil, nil, nil, nil, TRIVIAL_NAME, TRIVIAL_NAME, EASY_NAME, EASY_NAME, MEDIUM_NAME, MEDIUM_NAME, CHALLENGING_NAME, FORMIDABLE_NAME, LEGENDARY_NAME, HEROIC_NAME, GODLY_NAME, IMPOSSIBLE_NAME, IMPOSSIBLE_NAME, IMPOSSIBLE_NAME}
+
 --[[
     Trivial : 6-7
     Easy : 8-9
@@ -883,3 +884,22 @@ dvsd.TRAIT_DEFINITIONS = {
         interfacing={category=dvsd.s_MOTORICS, definition=dvsd.s_interfacing}, --scaling
         composure={category=dvsd.s_MOTORICS, definition=dvsd.s_composure},
     }
+
+function dvsd.getSkillCategory(skill)
+    return dvsd.TRAIT_DEFINITIONS[skill.internalName].category
+end
+
+local function rgbToHex(r, g, b)
+    -- Clamp values to [0,1] in case of rounding errors
+    local function clamp(x)
+        return math.max(0, math.min(1, x))
+    end
+
+    -- Scale from [0,1] to [0,255] and round
+    local r255 = math.floor(clamp(r) * 255 + 0.5)
+    local g255 = math.floor(clamp(g) * 255 + 0.5)
+    local b255 = math.floor(clamp(b) * 255 + 0.5)
+
+    -- Format as hex string
+    return string.format("%02X%02X%02X", r255, g255, b255)
+end

@@ -13,7 +13,7 @@ local function appendEvents()
     local event1 = mde.buildEvent("TEST_HYPERSPACE_QUEST")
     table.insert(event1, mde.buildPassiveCheck("volition", 10, "mde_passive_1", "yuhp"))
     table.insert(event1, mde.buildActiveCheck("reaction_speed", 9, "mde_active_1", "Try yor lukk",
-            "MDE_TEST_REACTION_SUCCES", "MDE_TEST_REACTION_FAILURE"))
+            "MDE_TEST_REACTION_SUCCESS", "MDE_TEST_REACTION_FAILURE"))
     table.insert(eventList, event1)--]]
     
     --EVENT CODE HERE ^

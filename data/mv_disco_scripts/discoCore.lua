@@ -41,13 +41,13 @@ local mHaveCreatedParticles
 local mActiveCheckTimerStarted = false
 local mEventTimer = 0
 local mCurrentAVCheck
+local mAttemptedChecks = {}
+
+local forceValue = nil
 
 if not lwl then
     error("Lightweight Lua was not patched, or was patched after Multiverse Disco Engine.  Install it properly or face undefined behavior.")
 end
-
-
-
 
 --[[
 The goal of this is to create a system which can be used to inhect disco elysium-style checks/options into events.
@@ -67,6 +67,22 @@ Meta content
 QoL / Graphics
 'Patch Last' mods
 --]]
+
+
+local function wasAttempted(check)
+    print("checking check ", ""..check.skill..check.value)
+    for _,value in ipairs(mAttemptedChecks) do
+        if (value == ""..check.skill..check.value) then
+            return true
+        end
+    end
+    return false
+end
+
+local function markAttempted(checkAvList)
+    print("attempted check ", ""..checkAvList.skill..checkAvList.targetValue)
+    table.insert(mAttemptedChecks, ""..checkAvList.skill..checkAvList.targetValue)
+end
 
 local function calculate_probabilities(num_dice, sides)
     if num_dice == 0 then
@@ -183,7 +199,7 @@ local function safeLoadCrewStats(species)
     local crewStats = dvsd.CREW_STAT_TABLE[species]
     if (crewStats == nil) then
         --make something up, can change this
-        crewStats = HUMAN
+        crewStats = dvsd.CREW_STAT_DEFINITIONS.HUMAN
     end
     return crewStats
 end
@@ -194,7 +210,7 @@ end
 
 local function getSpeciesStat(crewmem, statName)
     local species = crewmem:GetSpecies()
-    local crewStats = safeLoadCrewStats(species)
+    local crewStats = safeLoadCrewStats(species) --todo reports this returns nil with unknown crew [alister]
     local stat = crewStats[statName]
     if (stat == nil) then
         stat = 0
@@ -290,7 +306,9 @@ end
 local function getAverageStat(statName)
     local totalStats = getSumStat(statName)
     local numCrew = #lwl.getAllMemberCrew(Hyperspace.ships.player)
-    return totalStats / (numCrew + 1) --+2 if I include the captain at some point
+    local averageStat = totalStats / (numCrew + 1) --+2 if I include the captain at some point
+    local statCategory = dvsd.TRAIT_DEFINITIONS[statName].category.internalName
+    return  averageStat + Hyperspace.playerVariables["DISCO_BOOST_"..statCategory] --Flat attribute boosts.
 end
 
 local function getStat(statName)
@@ -328,7 +346,7 @@ local function activeCheck(skillCheck)
     local checkSuccess = (totalValue >= amount)
 
     local eventName
-    if checkSuccess then
+    if checkSuccess then --Event names are needed to queue up the AV effect for when they get selected.  Hacky, but I don't know how to hook it right.
         eventName = skillCheck.successEventName
     else
         eventName = skillCheck.failureEventName
@@ -393,6 +411,7 @@ local function renderCheckResult(locationEvent)
     mCurrentAVCheck = mQueuedCheckAVList[locationEvent.eventName]
     --print("renderCheckResult ", check)
     if mCurrentAVCheck ~= nil then
+        --markAttempted(mCurrentAVCheck) TODO put this back when done testing
         if (mCurrentAVCheck.success) then
             Hyperspace.Sounds:PlaySoundMix("disco_check_success", 5, false)
         else
@@ -427,9 +446,7 @@ local function renderCheckResult(locationEvent)
     mQueuedCheckAVList = {}
 end
 
---Brightness particles don't tick when you're in a menu.  BRB editing brightness.
 --attribute values for guns?
---Lua button to check your attributes
 --lua events that pop up out of combat
 --lua events that pop up in combat, based on the ship you're fighting.
 --These need to be very rare
@@ -472,7 +489,6 @@ local function appendChoices(locationEvent)
                     if (passiveSuccess) then
                         playPassiveSuccess(skillCheck)
                         renderCard(skillCheck.skill)
-                        choice.requirement.blue = true
                         choice.text.data = passiveText(skillCheck)
                         choice.requirement.min_level = 1
                     else
@@ -482,13 +498,18 @@ local function appendChoices(locationEvent)
             end
         else --active
             local activeSuccess = activeCheck(skillCheck)
+            if forceValue ~= nil then
+                print("Forced success to be ", forceValue)
+                activeSuccess = forceValue
+                forceValue = nil
+            end
             --print("active check found.")
             for choice in vter(choices) do
                 --print(choice.text.data, skillCheck.placeholderChoiceText, choice.text.data == skillCheck.placeholderChoiceText)
                 if (choice.text.data == skillCheck.placeholderChoiceText) then
                     --These ones always show up, and it's a matter of if it succeeds.  Ideally I would't have to do this in xml, it takes two events for each active check.
                     choice.text.data = activeText(skillCheck)
-                    local shouldDisplay = (activeSuccess == choice.requirement.blue)
+                    local shouldDisplay = (not wasAttempted(skillCheck)) and (activeSuccess == choice.requirement.blue) 
                     --print("Success? ", activeSuccess, choice.requirement.blue, shouldDisplay)
                     if (shouldDisplay) then
                         --todo somehow make a trigger for when you select this.
@@ -528,12 +549,26 @@ function mde.buildEvent(eventName)
     return {name=eventName}
 end
 
+---comment
+---@param skill string
+---@param difficultyValue integer
+---@param placeholderChoiceText string
+---@param replacementChoiceText string
+---@return table
 function mde.buildPassiveCheck(skill, difficultyValue, placeholderChoiceText, replacementChoiceText)
     return {placeholderChoiceText=placeholderChoiceText, passive=true, skill=skill, value=difficultyValue, replacementChoiceText=replacementChoiceText}
 end
 
-function mde.buildActiveCheck(skill, difficultyValue, initialChoiceText, replacementChoiceText, successEventName, failureEventName)
-    return {passive=false, skill=skill, value=difficultyValue, placeholderChoiceText=initialChoiceText, replacementChoiceText=replacementChoiceText, successEventName=successEventName, failureEventName=failureEventName}
+---comment
+---@param skill string
+---@param difficultyValue integer
+---@param placeholderChoiceText string
+---@param replacementChoiceText string
+---@param successEventName string
+---@param failureEventName string
+---@return table
+function mde.buildActiveCheck(skill, difficultyValue, placeholderChoiceText, replacementChoiceText, successEventName, failureEventName)
+    return {passive=false, skill=skill, value=difficultyValue, placeholderChoiceText=placeholderChoiceText, replacementChoiceText=replacementChoiceText, successEventName=successEventName, failureEventName=failureEventName}
 end
 
 --[[
@@ -718,3 +753,17 @@ script.on_internal_event(Defines.InternalEvents.ON_TICK, function()
         end
     end
 end)
+
+
+script.on_internal_event(Defines.InternalEvents.JUMP_LEAVE, function()
+    mAttemptedChecks = {}
+end)
+
+--------------------------------DEBUG METHODS---------------------------------------
+function disco_force_success()
+    forceValue = true
+end
+
+function disco_force_fail()
+    forceValue = false
+end

@@ -45,6 +45,10 @@ local mAttemptedChecks = {}
 
 local forceValue = nil
 
+local mSuspendedText = nil
+local mSuspendedStuff = nil
+local mTextboxUpdateReady = false
+
 if not lwl then
     error("Lightweight Lua was not patched, or was patched after Multiverse Disco Engine.  Install it properly or face undefined behavior.")
 end
@@ -70,7 +74,7 @@ QoL / Graphics
 
 
 local function wasAttempted(check)
-    print("checking check ", ""..check.skill..check.value)
+    --print("checking check ", ""..check.skill..check.value)
     for _,value in ipairs(mAttemptedChecks) do
         if (value == ""..check.skill..check.value) then
             return true
@@ -388,8 +392,14 @@ end
 
 local function renderCard(skillName)
     cleanUpParticles()
-    --Time doesn't tick on this layer while events are up.
-    mCurrentCard = Brightness.create_particle("particles/attributes/"..skillName, 1, INFINITESIMAL, Hyperspace.Pointf(990, 330), 0, nil, "MOUSE_CONTROL_PRE")
+    --Time doesn't tick on this layer while events are up. todo newest brightness.
+    local xPos
+    if Hyperspace.ships(1) then
+        xPos = 837
+    else
+        xPos = 990
+    end
+    mCurrentCard = Brightness.create_particle("particles/attributes/"..skillName, 1, INFINITESIMAL, Hyperspace.Pointf(xPos, 330), 0, nil, "MOUSE_CONTROL_PRE")
 end
 
 local function playPassiveSuccess(check)
@@ -441,7 +451,8 @@ local function renderCheckResult(locationEvent)
         else
             resultString = "Failure"
         end
-        lwl.prependEventText(locationEvent, checkString..resultString..checkStringPost)
+        mSuspendedText = checkString..resultString..checkStringPost..locationEvent.text.data
+        locationEvent.text.data = "[style[color:"..colorString.."]]"..checkSkill.name.."[[/style]]".."[style[color:a8a8a8]] ["..dvsd.CHECK_DIFFICULTY_NAMES[mCurrentAVCheck.targetValue].."][[/style]]"
     end
     mQueuedCheckAVList = {}
 end
@@ -714,6 +725,8 @@ local statScreenButton = lwui.buildButton(1218, 625, 30, 30, --disco icon?
 --lwui.addTopLevelObject(switchScreenButton, MAIN_LAYER)
 lwui.addTopLevelObject(statScreenButton, MAIN_LAYER)
 
+
+
 script.on_internal_event(Defines.InternalEvents.ON_TICK, function()
     --print("ticking", Hyperspace.ships(0) ~= nil, mActiveCheckTimerStarted)
     if not Hyperspace.ships(0) then return end
@@ -741,6 +754,9 @@ script.on_internal_event(Defines.InternalEvents.ON_TICK, function()
             mCurrentOverlay.paused = true
             mCurrentOverlay.playDuringGamePause = true
             mHaveCreatedParticles = true
+            --todo fill the values here.
+            if not mSuspendedText then error("DiscoCore: No text ready to render!") end
+            mTextboxUpdateReady = true
         elseif mEventTimer >= FADE_OUT_START then
             --print("fading overlay")
             resetActiveCheck()
@@ -754,6 +770,17 @@ script.on_internal_event(Defines.InternalEvents.ON_TICK, function()
     end
 end)
 
+script.on_render_event(Defines.RenderEvents.CHOICE_BOX, function(choiceBox)
+    if mSuspendedText then
+        if mTextboxUpdateReady then
+            mTextboxUpdateReady = false
+            choiceBox.mainText = mSuspendedText
+            mSuspendedText = nil
+        end
+        return Defines.Chain.PREEMPT
+    end
+end,
+function() end)
 
 script.on_internal_event(Defines.InternalEvents.JUMP_LEAVE, function()
     mAttemptedChecks = {}

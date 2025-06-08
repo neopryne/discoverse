@@ -451,8 +451,9 @@ local function renderCheckResult(locationEvent)
         else
             resultString = "Failure"
         end
-        mSuspendedText = checkString..resultString..checkStringPost..locationEvent.text.data
+        mSuspendedText = checkString..resultString..checkStringPost..locationEvent.text:GetText()
         locationEvent.text.data = "[style[color:"..colorString.."]]"..checkSkill.name.."[[/style]]".."[style[color:a8a8a8]] ["..dvsd.CHECK_DIFFICULTY_NAMES[mCurrentAVCheck.targetValue].."][[/style]]"
+        locationEvent.text.isLiteral = true
     end
     mQueuedCheckAVList = {}
 end

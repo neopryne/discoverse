@@ -20,6 +20,6 @@ Example crew stat block definition:
 {INTELLECT=3, logic=0, encylopedia=0, rhetoric=0, drama=0, conceptualization=0, visual_calculus=0, PSYCHE=3, volition=0, inland_empire=0, empathy=0, authority=0, espirit_de_corps=0, suggestion=0, PHYSIQUE=3, endurance=0, pain_threshold=0, physical_instrument=0, electrochemistry=0, shivers=0, half_light=0, MOTORICS=3, hand_eye_coordination=0, perception=0, reaction_speed=0, savoir_faire=0, interfacing=0, composure=0}
 
 ## Requirements
-Requires Lightweight Lua and Brightness Particles.
+Requires [Lightweight Lua](https://github.com/neopryne/lightweight-lua) and [Brightness Particles](https://ftlmultiverse.boards.net/thread/109/library-brightness-particles).
 
 See exampleUsage.lua for how you can use it in your mod.

@@ -1,3 +1,5 @@
+![Github All Releases](https://img.shields.io/github/downloads/neopryne/discoverse/total?color=0078D4&style=for-the-badge) ![GitHub Release](https://img.shields.io/github/v/release/neopryne/discoverse?color=05227A&style=for-the-badge) [![GitHub stars](https://img.shields.io/github/stars/neopryne/discoverse?color=F4870A&style=for-the-badge)](https://github.com/neopryne/discoverse/stargazers) [![GitHub issues](https://img.shields.io/github/issues/neopryne/discoverse?color=FF0000&style=for-the-badge)](https://github.com/neopryne/discoverse/issues) [![GitHub forks](https://img.shields.io/github/forks/neopryne/discoverse?color=00AF00&style=for-the-badge)](https://github.com/neopryne/discoverse/network) [![License: IDK](https://img.shields.io/badge/License-MIT?style=for-the-badge)](https://github.com/neopryne/discoverse/blob/main/License.md)
+
 # Multiverse Disco Engine
 FTL Multiverse Framework for Disco Elysium style events
 Supports passive and active checks of all DE skills.

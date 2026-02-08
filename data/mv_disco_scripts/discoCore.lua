@@ -2,6 +2,8 @@
 --Active checks need two xml events, one will be disabled based on the check result.  Blue value indicates if it is for a success or not.
 --max_group must be different for each option for an event.  I'm using the 640 block, forgemaster uses 620-ish, pick something for yourself if you're using this.
 --Every check is a red check here (can't be retried).
+--You must put events with no check between active->passive checks.  This can be a small continue box.
+--All other combinations work fine, but active->passive has a conflict with what wants to render.
 
 --[[
     See example usage file
@@ -16,7 +18,7 @@ local Brightness = mods.brightness
 local dvsd = mods.discoVerseStaticDefinitions
 
 local LOG_LEVEL = 3
-local LOG_TAG = "mods.disco.core"
+local TAG = "mods.disco.core"
 
 local DEFAULT_STARTING_POWER = 7
 local DEFAULT_POWER_CAP = 25
@@ -192,7 +194,7 @@ function mde.getAutoShipStat(statName)
         baseStat = baseStat + (room.extend.ionDamageResistChance / 10)
     else
         if (statName == nil) then statName = "nil" end
-        lwl.logError(LOG_TAG, "Invalid stat "..statName, LOG_LEVEL)
+        lwl.logError(TAG, "Invalid stat "..statName, LOG_LEVEL)
     end
     --lwl.logDebug(LOG_TAG, "autostat "..statName.." was "..baseStat, LOG_LEVEL)
     return baseStat
@@ -222,10 +224,10 @@ local function getSpeciesStat(crewmem, statName)
     local statCategory = dvsd.TRAIT_DEFINITIONS[statName].category.internalName
     local mainStat = crewStats[statCategory]
     if (mainStat == nil) then
-        lwl.logError(LOG_TAG, "Main stat for "..species.." was nil!"..statCategory, LOG_LEVEL)
+        lwl.logError(TAG, "Main stat for "..species.." was nil!"..statCategory, LOG_LEVEL)
         mainStat = 0
     end
-    lwl.logInfo(LOG_TAG, statName.." for "..species..": "..mainStat.."+"..stat, LOG_LEVEL)
+    lwl.logInfo(TAG, statName.." for "..species..": "..mainStat.."+"..stat, LOG_LEVEL)
     local skillStat = 0
     --Weapons, Repairs, Fighting, Shields, Piloting, Engines
     if (statName == dvsd.s_logic.internalName) then
@@ -367,6 +369,8 @@ local function passiveCheck(statName, amount)--todo actually use this
 end
 
 local function resetActiveCheck() --render card is cleaning up this, need ot reorder.
+    lwl.logInfo(TAG, "resetActiveCheck")
+    --print("resetActiveCheck")
     if mCurrentOverlay then
         mCurrentOverlay.paused = false
     end
@@ -376,6 +380,8 @@ local function resetActiveCheck() --render card is cleaning up this, need ot reo
 end
 
 local function destroyDice()
+    lwl.logInfo(TAG, "destroyDice")
+    --print("destroyDice")
     for _,die in ipairs(mCurrentDice) do
         Brightness.destroy_particle(die)
     end
@@ -384,6 +390,8 @@ end
 
 local function cleanUpParticles()
     if (mCurrentCard ~= nil) then
+        lwl.logInfo(TAG, "destroy current card")
+        --print("destroy current card")
         Brightness.destroy_particle(mCurrentCard)
     end
     destroyDice()
@@ -391,6 +399,7 @@ local function cleanUpParticles()
 end
 
 local function renderCard(skillName)
+    lwl.logInfo(TAG, "renderCard")
     cleanUpParticles()
     --Time doesn't tick on this layer while events are up. todo newest brightness.
     local xPos
@@ -419,7 +428,9 @@ end
 
 local function renderCheckResult(locationEvent)
     mCurrentAVCheck = mQueuedCheckAVList[locationEvent.eventName]
-    --print("renderCheckResult ", check)
+    --print("All events:", lwl.dumpObject(mQueuedCheckAVList))
+    mQueuedCheckAVList[locationEvent.eventName] = nil
+    --print("renderCheckResult ", mCurrentAVCheck, locationEvent.eventName)
     if mCurrentAVCheck ~= nil then
         --markAttempted(mCurrentAVCheck) TODO put this back when done testing
         if (mCurrentAVCheck.success) then
@@ -455,7 +466,6 @@ local function renderCheckResult(locationEvent)
         locationEvent.text.data = "[style[color:"..colorString.."]]"..checkSkill.name.."[[/style]]".."[style[color:a8a8a8]] ["..dvsd.CHECK_DIFFICULTY_NAMES[mCurrentAVCheck.targetValue].."][[/style]]"
         locationEvent.text.isLiteral = true
     end
-    mQueuedCheckAVList = {}
 end
 
 --attribute values for guns?
@@ -511,7 +521,7 @@ local function appendChoices(locationEvent)
         else --active
             local activeSuccess = activeCheck(skillCheck)
             if forceValue ~= nil then
-                print("Forced success to be ", forceValue)
+                --print("Forced success to be ", forceValue)
                 activeSuccess = forceValue
                 forceValue = nil
             end

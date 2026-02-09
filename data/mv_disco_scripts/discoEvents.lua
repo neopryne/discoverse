@@ -71,7 +71,7 @@ your current value for a given stat.
 If it's your ship, it uses the sector map ship icon.
 --]]
 
-
+--oh, this is for red checks, and not currently implemented.
 local function wasAttempted(check)
     --print("checking check ", ""..check.skill..check.value)
     -- for _,value in ipairs(mAttemptedChecks) do
@@ -107,7 +107,7 @@ end
 --#region Event Checks
 
 --ill see if i want inverse checks.
-local function activeCheck(skillCheck)
+local function activeCheck(skillCheck, forceTo)
     local statName = skillCheck.skill
     local amount = skillCheck.value
     local firstDie = math.random(1,6)
@@ -122,6 +122,9 @@ local function activeCheck(skillCheck)
         return true
     end
     local checkSuccess = (totalValue >= amount)
+    if forceTo ~= nil then
+        checkSuccess = forceTo
+    end
 
     local eventName
     if checkSuccess then --Event names are needed to queue up the AV effect for when they get selected.  Hacky, but I don't know how to hook it right.
@@ -249,20 +252,20 @@ local function appendChoices(locationEvent)
                 end
             end
         else --active
-            local activeSuccess = activeCheck(skillCheck)
+            local activeSuccess = activeCheck(skillCheck, forceValue) --todo this should return the whole check, not success value.
             if forceValue ~= nil then
-                print("Forced success to be ", forceValue)
+                --print("Forced success to be ", forceValue)
                 activeSuccess = forceValue
                 forceValue = nil
             end
-            print("active check found.")
+            --print("active check found.")
             for choice in vter(choices) do
-                print(choice.text.data, skillCheck.placeholderChoiceText, choice.text.data == skillCheck.placeholderChoiceText)
+                --print(choice.text.data, skillCheck.placeholderChoiceText, choice.text.data == skillCheck.placeholderChoiceText)
                 if (choice.text.data == skillCheck.placeholderChoiceText) then
                     --These ones always show up, and it's a matter of if it succeeds.  Ideally I would't have to do this in xml, it takes two events for each active check.
                     choice.text.data = activeText(skillCheck)
                     local shouldDisplay = (not wasAttempted(skillCheck)) and (activeSuccess == choice.requirement.blue)
-                    print("Success? ", activeSuccess, choice.requirement.blue, shouldDisplay)
+                    --print("Success? ", activeSuccess, choice.requirement.blue, shouldDisplay)
                     if (shouldDisplay) then
                         --todo somehow make a trigger for when you select this.
                         choice.requirement.blue = true
@@ -345,9 +348,10 @@ end
 --#region -------------------------------------UI------------------------------------------------
 local function renderCheckResult(locationEvent)
     mCurrentAVCheck = mQueuedCheckAVList[locationEvent.eventName]
-    --print("All events:", lwl.dumpObject(mQueuedCheckAVList))
+    print("All events:", lwl.dumpObject(mQueuedCheckAVList))
     mQueuedCheckAVList[locationEvent.eventName] = nil
-    --print("renderCheckResult ", mCurrentAVCheck, locationEvent.eventName)
+    --The check was a success, but it saved failure.
+    print("renderCheckResult ", mCurrentAVCheck, locationEvent.eventName)
     if mCurrentAVCheck ~= nil then
         --markAttempted(mCurrentAVCheck) TODO put this back when done testing
         if (mCurrentAVCheck.success) then
@@ -366,7 +370,7 @@ local function renderCheckResult(locationEvent)
             die.playDuringGamePause = true
         end
         mActiveCheckTimerStarted = true
-        --print("started", mActiveCheckTimerStarted)
+        print("started", mActiveCheckTimerStarted)
 
         local checkSkill = mde.skillFromName(mCurrentAVCheck.skill)
         local colorString = dvsd.getSkillCategory(checkSkill).eventColor

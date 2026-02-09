@@ -1,0 +1,2 @@
+mods.multiverseDiscoEngine = {}
+mods.discoVerseStaticDefinitions = {}

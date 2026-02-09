@@ -184,6 +184,7 @@ function mde.getHighestStatSource(statName)
         local species = crewmem:GetSpecies()
         local race = crewmem.extend:GetDefinition().race
         if crewStat > highest.stat then
+            highest.crewId = crewmem.extend.selfId
             highest.stat = crewStat
             highest.species = species
             highest.race = race

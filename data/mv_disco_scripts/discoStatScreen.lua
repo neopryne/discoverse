@@ -12,7 +12,7 @@ local textHeight = 20
 
 local mTraitBoxes = {}
 local mGuiMode = 0 -- 1=stats, 2= crew, 0= normal
-
+local COLOR_WHITE = Graphics.GL_Color(1, 1, 1, 1)
 
 ---------------------------------------UI------------------------------------------------
 ---Open issues: no sound
@@ -70,7 +70,11 @@ local mDefaultShipIcon = Hyperspace.Resources:CreateImagePrimitiveString("map/ma
 local function traitBoxRender(textBox)
     if textBox.statSource then
         textBox.text = "       "..(math.floor(textBox.statSource.stat*100)/100) --two decimal places
-        --
+        if lwui.mHoveredObject == textBox then
+            textBox.textColor = textBox.skillCategory.color
+        else
+            textBox.textColor = COLOR_WHITE
+        end
 
         local baseId = textBox.statSource.species
         local fallbackId = textBox.statSource.race
@@ -125,6 +129,8 @@ for _,category in ipairs(dvsd.TRAIT_CATEGORIES) do
             traitNameBox.textColor = category.color
             local traitValueBox = lwui.buildFixedTextBox(0, 0, imageWidth, textHeight,
                 statScreenVisibility, traitBoxRender, 30)
+            traitValueBox.focusable = true
+            traitValueBox.skillCategory = category
             --traitValue.textColor = category.color
             mTraitBoxes[trait.definition.internalName] = traitValueBox
             traitContainer.addObject(traitNameBox)
@@ -148,6 +154,31 @@ lwl.safe_script.on_internal_event("disco stat box update", Defines.InternalEvent
         end
     end
 end)
+
+local mRenderTooltip = false
+local function tooltipVisibilityFunction()
+    return mRenderTooltip
+end
+
+local mTooltipWindow = lwui.buildDynamicHeightTextBox(927, 25, 120, 90, tooltipVisibilityFunction, lwui.solidRectRenderFunction(Graphics.GL_Color(.1, .1, .1, .9)), 11)
+mTooltipWindow.text = "oh yeah baby this rendered some text and it's really big yo dode"
+lwui.addTopLevelObject(mTooltipWindow, "MOUSE_CONTROL_PRE")
+
+lwl.safe_script.on_internal_event("disco_stat_hover_logic", Defines.InternalEvents.ON_TICK, function()
+-- script.on_internal_event(Defines.InternalEvents.ON_TICK, function()
+    if lwui.mHoveredObject then
+        local statSource = lwui.mHoveredObject.statSource
+        if statSource then
+            local mousePos = Hyperspace.Mouse.position
+            mTooltipWindow.text = "From: "..lwl.getCrewById(statSource.crewId):GetLongName()
+            mTooltipWindow.x = mousePos.x
+            mTooltipWindow.y = mousePos.y
+            mRenderTooltip = true
+            return
+        end
+    end
+    mRenderTooltip = false
+    end)
 -----------Crew Screen--------------
 --Actually I decided I didn't want this
 --[[

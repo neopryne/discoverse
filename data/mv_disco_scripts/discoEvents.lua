@@ -389,7 +389,7 @@ local function renderCheckResult(locationEvent)
     end
 end
 
-script.on_internal_event(Defines.InternalEvents.ON_TICK, function()
+lwl.safe_script.on_internal_event("mde actice check render", Defines.InternalEvents.ON_TICK, function()
     --print("ticking", Hyperspace.ships(0) ~= nil, mActiveCheckTimerStarted)
     if not Hyperspace.ships(0) then return end
     if mActiveCheckTimerStarted then
@@ -424,18 +424,9 @@ script.on_internal_event(Defines.InternalEvents.ON_TICK, function()
             resetActiveCheck()
         end
     end
-
-    if mGuiMode ~= 0 then
-        --todo do this once per screen open.
-        --Update boxes with the current values
-        for key,box in pairs(mde.mTraitBoxes) do
-            local statSource = mde.getHighestStatSource(key)
-            box.statSource = statSource
-        end
-    end
 end)
 
-script.on_render_event(Defines.RenderEvents.CHOICE_BOX, function(choiceBox)
+lwl.safe_script.on_render_event("disco events delay result", Defines.RenderEvents.CHOICE_BOX, function(choiceBox)
     if mSuspendedText then
         if mTextboxUpdateReady then
             mTextboxUpdateReady = false
@@ -447,7 +438,7 @@ script.on_render_event(Defines.RenderEvents.CHOICE_BOX, function(choiceBox)
 end,
 function() end)
 
-script.on_internal_event(Defines.InternalEvents.JUMP_LEAVE, function()
+lwl.safe_script.on_internal_event("mde jump reset", Defines.InternalEvents.JUMP_LEAVE, function()
     mAttemptedChecks = {}
 end)
 --#endregion

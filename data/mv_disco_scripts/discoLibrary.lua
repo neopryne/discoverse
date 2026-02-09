@@ -12,8 +12,6 @@ local DEFAULT_POWER_CAP = 25
 local STARTING_ATTRIBUTE_VAULE = 2
 local ATTRIBUTE_VAULE_SOFT_CAP = 7
 
-mde.mTraitBoxes = {}
-
 --#region stat calcuation
 
 --As a baseline, you have a 4332 statblock randomly assigned with one proficiency as Captain.  So player stats should start off with nothing.  Don't call this.

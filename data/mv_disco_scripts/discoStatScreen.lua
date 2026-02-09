@@ -10,6 +10,7 @@ local imageHeight = 135
 local imageWidth = imageHeight * DISCO_TRAIT_RATIO
 local textHeight = 20
 
+local mTraitBoxes = {}
 local mGuiMode = 0 -- 1=stats, 2= crew, 0= normal
 
 
@@ -33,7 +34,7 @@ local function statScreenSwitch()
     end
 end
 
-script.on_internal_event(Defines.InternalEvents.ON_KEY_DOWN, function(Key)
+lwl.safe_script.on_internal_event("disco stat window exit", Defines.InternalEvents.ON_KEY_DOWN, function(Key)
     --esc makes this 0
     if Key == 27 then
         if mGuiMode ~= 0 then
@@ -125,7 +126,7 @@ for _,category in ipairs(dvsd.TRAIT_CATEGORIES) do
             local traitValueBox = lwui.buildFixedTextBox(0, 0, imageWidth, textHeight,
                 statScreenVisibility, traitBoxRender, 30)
             --traitValue.textColor = category.color
-            mde.mTraitBoxes[trait.definition.internalName] = traitValueBox
+            mTraitBoxes[trait.definition.internalName] = traitValueBox
             traitContainer.addObject(traitNameBox)
             traitContainer.addObject(traitValueBox)
             currentRow.addObject(traitContainer)
@@ -135,7 +136,18 @@ for _,category in ipairs(dvsd.TRAIT_CATEGORIES) do
 end
 lwui.addTopLevelObject(statRowsContainer, MAIN_LAYER)
 
+lwl.safe_script.on_internal_event("disco stat box update", Defines.InternalEvents.ON_TICK, function()
+    if not Hyperspace.ships(0) then return end
 
+    if mGuiMode ~= 0 then
+        --todo do this once per screen open.
+        --Update boxes with the current values
+        for key,box in pairs(mTraitBoxes) do
+            local statSource = mde.getHighestStatSource(key)
+            box.statSource = statSource
+        end
+    end
+end)
 -----------Crew Screen--------------
 --Actually I decided I didn't want this
 --[[

@@ -1,25 +1,21 @@
-local mde = mods.multiverseDiscoEngine
-
 local vter = mods.multiverse.vter
 local lwl = mods.lightweight_lua
 local lwui = mods.lightweight_user_interface
 local dvsd = mods.discoVerseStaticDefinitions
+local mde = mods.multiverseDiscoEngine
 
---[[
-rectangle of stats with values for each below the image.  
+local MAIN_LAYER = "MOUSE_CONTROL_PRE"
+local DISCO_TRAIT_RATIO = (368/512)
+local imageHeight = 135
+local imageWidth = imageHeight * DISCO_TRAIT_RATIO
+local textHeight = 20
 
-
-This just needs a button/hotkey to dismiss this screen
-
-Can two files depend on each other?  Probably, idk how ballatro does it otherwise.
---]]
+local mGuiMode = 0 -- 1=stats, 2= crew, 0= normal
 
 
 ---------------------------------------UI------------------------------------------------
 ---Open issues: no sound
 local function NOOP() end
-
-local mGuiMode = 0 -- 1=stats, 2= crew, 0= normal
 
 local function statScreenToggle()
     if mGuiMode == 0 then
@@ -72,7 +68,7 @@ local mDefaultShipIcon = Hyperspace.Resources:CreateImagePrimitiveString("map/ma
 --local mDefaultShipIcon = Hyperspace.Resources:CreateImagePrimitiveString("d6_6.png", 0, 0, 0, Graphics.GL_Color(1, 1, 1, 1), 1, false)
 local function traitBoxRender(textBox)
     if textBox.statSource then
-        textBox.text = "      "..(math.floor(textBox.statSource.stat*100)/100) --two decimal places
+        textBox.text = "       "..(math.floor(textBox.statSource.stat*100)/100) --two decimal places
         --
 
         local baseId = textBox.statSource.species
@@ -100,12 +96,6 @@ local function traitBoxRender(textBox)
 end
 
 
-local MAIN_LAYER = "MOUSE_CONTROL_PRE"
-local DISCO_TRAIT_RATIO = (368/512)
-local imageHeight = 135
-local imageWidth = imageHeight * DISCO_TRAIT_RATIO
-local textHeight = 20
-local mTraitBoxes = {}
 
 --The render function of the containers is off.  Idk what's up with it.
 local backgroundFilter = lwui.buildObject(0, 0, 1280, 720, eitherScreenVisibility, lwui.solidRectRenderFunction(Graphics.GL_Color(0, 0, .0, .5)))
@@ -135,7 +125,7 @@ for _,category in ipairs(dvsd.TRAIT_CATEGORIES) do
             local traitValueBox = lwui.buildFixedTextBox(0, 0, imageWidth, textHeight,
                 statScreenVisibility, traitBoxRender, 30)
             --traitValue.textColor = category.color
-            mTraitBoxes[trait.definition.internalName] = traitValueBox
+            mde.mTraitBoxes[trait.definition.internalName] = traitValueBox
             traitContainer.addObject(traitNameBox)
             traitContainer.addObject(traitValueBox)
             currentRow.addObject(traitContainer)

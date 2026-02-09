@@ -12,6 +12,7 @@ local DEFAULT_POWER_CAP = 25
 local STARTING_ATTRIBUTE_VAULE = 2
 local ATTRIBUTE_VAULE_SOFT_CAP = 7
 
+mde.mTraitBoxes = {}
 
 --#region stat calcuation
 
@@ -174,7 +175,7 @@ local function getSpeciesStat(crewmem, statName)
     return mainStat + stat + skillStat
 end
 
-local function getHighestStatSource(statName)
+function mde.getHighestStatSource(statName)
     local highest = {stat=mde.getAutoShipStat(statName), race="none_autoship"}
     
     local crewList = lwl.getAllMemberCrew(Hyperspace.ships.player)
@@ -198,24 +199,13 @@ end
 --#endregion
 
 
-
-
-
-
-
-
-
-
-
-
-
 --#region API
 
 ---comment
 ---@param statName string the name of the stat
 ---@return number the highest stat value among your ship and crew.
 function mde.getStat(statName)
-    return getHighestStatSource(statName).stat
+    return mde.getHighestStatSource(statName).stat
 end
 
 --#region Utils

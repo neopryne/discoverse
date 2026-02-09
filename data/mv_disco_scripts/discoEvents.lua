@@ -12,17 +12,11 @@ local mde = mods.multiverseDiscoEngine
 
 local vter = mods.multiverse.vter
 local lwl = mods.lightweight_lua
-local lwui = mods.lightweight_user_interface
 local Brightness = mods.brightness
 local dvsd = mods.discoVerseStaticDefinitions
 
 local LOG_LEVEL = 3
 local TAG = "mods.disco.core"
-
-local DEFAULT_STARTING_POWER = 7
-local DEFAULT_POWER_CAP = 25
-local STARTING_ATTRIBUTE_VAULE = 2
-local ATTRIBUTE_VAULE_SOFT_CAP = 7
 
 local CHROMAKEY_DELAY = 12.33 --show dice and overlay
 local FADE_OUT_START = 28
@@ -47,7 +41,6 @@ local mAttemptedChecks = {}
 local forceValue = nil
 
 local mSuspendedText = nil
-local mSuspendedStuff = nil
 local mTextboxUpdateReady = false
 
 if not lwl then
@@ -258,18 +251,18 @@ local function appendChoices(locationEvent)
         else --active
             local activeSuccess = activeCheck(skillCheck)
             if forceValue ~= nil then
-                --print("Forced success to be ", forceValue)
+                print("Forced success to be ", forceValue)
                 activeSuccess = forceValue
                 forceValue = nil
             end
-            --print("active check found.")
+            print("active check found.")
             for choice in vter(choices) do
-                --print(choice.text.data, skillCheck.placeholderChoiceText, choice.text.data == skillCheck.placeholderChoiceText)
+                print(choice.text.data, skillCheck.placeholderChoiceText, choice.text.data == skillCheck.placeholderChoiceText)
                 if (choice.text.data == skillCheck.placeholderChoiceText) then
                     --These ones always show up, and it's a matter of if it succeeds.  Ideally I would't have to do this in xml, it takes two events for each active check.
                     choice.text.data = activeText(skillCheck)
                     local shouldDisplay = (not wasAttempted(skillCheck)) and (activeSuccess == choice.requirement.blue)
-                    --print("Success? ", activeSuccess, choice.requirement.blue, shouldDisplay)
+                    print("Success? ", activeSuccess, choice.requirement.blue, shouldDisplay)
                     if (shouldDisplay) then
                         --todo somehow make a trigger for when you select this.
                         choice.requirement.blue = true
@@ -431,8 +424,8 @@ script.on_internal_event(Defines.InternalEvents.ON_TICK, function()
     if mGuiMode ~= 0 then
         --todo do this once per screen open.
         --Update boxes with the current values
-        for key,box in pairs(mTraitBoxes) do
-            local statSource = getHighestStatSource(key)
+        for key,box in pairs(mde.mTraitBoxes) do
+            local statSource = mde.getHighestStatSource(key)
             box.statSource = statSource
         end
     end

@@ -85,7 +85,7 @@ local function wasAttempted(check)
 end
 
 local function markAttempted(checkAvList)
-    print("attempted check ", ""..checkAvList.skill..checkAvList.targetValue)
+    --print("attempted check ", ""..checkAvList.skill..checkAvList.targetValue)
     table.insert(mAttemptedChecks, ""..checkAvList.skill..checkAvList.targetValue)
 end
 
@@ -103,6 +103,8 @@ end
 --starting reactor = 7, 3, ending reactor = 25, 7. 18 run, 4 rise
 
 
+--TODO sometimes successes don't do their animations.  I thought I fixed this.
+
 
 --#region Event Checks
 
@@ -116,12 +118,12 @@ local function activeCheck(skillCheck, forceTo)
     local totalValue = firstDie + secondDie + statValue
     --print("Active check: ", statName, " ", amount, " Rolls ", firstDie, secondDie, statValue, totalValue)
     --Snakeyes always fails.  Boxcars always succeeds.
-    if (totalValue == 2) then
-        return false
-    elseif (totalValue == 12) then
-        return true
-    end
     local checkSuccess = (totalValue >= amount)
+    if (totalValue == 2) then
+        checkSuccess = false
+    elseif (totalValue == 12) then
+        checkSuccess = true
+    end
     if forceTo ~= nil then
         checkSuccess = forceTo
     end
@@ -133,6 +135,7 @@ local function activeCheck(skillCheck, forceTo)
         eventName = skillCheck.failureEventName
     end
     
+    lwl.logDebug(TAG, "Active check: "..eventName.." "..statName.." "..amount.." Rolls "..firstDie.." "..secondDie.." "..statValue.." "..totalValue)
     mQueuedCheckAVList[eventName] = {success=checkSuccess, skill=skillCheck.skill, firstDie=firstDie,
         secondDie=secondDie, totalValue=totalValue, targetValue=amount}
     return checkSuccess
@@ -228,7 +231,7 @@ end
 local function appendChoices(locationEvent)
     local skillChecks = mDiscoEventsList[locationEvent.eventName]
     if skillChecks == nil then return end
-    --print("Checks: ",lwl.dumpObject(skillChecks))
+    lwl.logDebug(TAG, "Checks: "..lwl.dumpObject(skillChecks))
     local choices = locationEvent:GetChoices()
     --find the associated entry for each choice and apply it.
     for i = 1,#skillChecks do --iterate over choices, replace keywords with strings.
@@ -254,13 +257,13 @@ local function appendChoices(locationEvent)
         else --active
             local activeSuccess = activeCheck(skillCheck, forceValue) --todo this should return the whole check, not success value.
             if forceValue ~= nil then
-                --print("Forced success to be ", forceValue)
+                print("Forced success to be ", forceValue)
                 activeSuccess = forceValue
                 forceValue = nil
             end
             --print("active check found.")
             for choice in vter(choices) do
-                --print(choice.text.data, skillCheck.placeholderChoiceText, choice.text.data == skillCheck.placeholderChoiceText)
+                lwl.logDebug(TAG, choice.text.data.." "..skillCheck.placeholderChoiceText)
                 if (choice.text.data == skillCheck.placeholderChoiceText) then
                     --These ones always show up, and it's a matter of if it succeeds.  Ideally I would't have to do this in xml, it takes two events for each active check.
                     choice.text.data = activeText(skillCheck)
@@ -348,10 +351,10 @@ end
 --#region -------------------------------------UI------------------------------------------------
 local function renderCheckResult(locationEvent)
     mCurrentAVCheck = mQueuedCheckAVList[locationEvent.eventName]
-    print("All events:", lwl.dumpObject(mQueuedCheckAVList))
+    lwl.logDebug(TAG, "Result: All events: "..lwl.dumpObject(mQueuedCheckAVList))
     mQueuedCheckAVList[locationEvent.eventName] = nil
-    --The check was a success, but it saved failure.
-    print("renderCheckResult ", mCurrentAVCheck, locationEvent.eventName)
+    --The check was a failure, but it loaded the success event.  It also didn't put _anything_ in the mQueuedCheckAVList.
+    lwl.logDebug(TAG, "renderCheckResult "..tostring(mCurrentAVCheck).." "..locationEvent.eventName)
     if mCurrentAVCheck ~= nil then
         --markAttempted(mCurrentAVCheck) TODO put this back when done testing
         if (mCurrentAVCheck.success) then
@@ -370,7 +373,7 @@ local function renderCheckResult(locationEvent)
             die.playDuringGamePause = true
         end
         mActiveCheckTimerStarted = true
-        print("started", mActiveCheckTimerStarted)
+        lwl.logDebug(TAG, "started"..tostring(mActiveCheckTimerStarted))
 
         local checkSkill = mde.skillFromName(mCurrentAVCheck.skill)
         local colorString = dvsd.getSkillCategory(checkSkill).eventColor

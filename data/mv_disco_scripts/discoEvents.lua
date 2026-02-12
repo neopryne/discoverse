@@ -38,7 +38,8 @@ local mEventTimer = 0
 local mCurrentAVCheck
 local mAttemptedChecks = {}
 
-local forceValue = nil
+local mForceValue = nil
+local mForcedDiceValue = nil
 
 local mSuspendedText = nil
 local mTextboxUpdateReady = false
@@ -109,19 +110,23 @@ end
 --#region Event Checks
 
 --ill see if i want inverse checks.
-local function activeCheck(skillCheck, forceTo)
+local function activeCheck(skillCheck, forceTo, forceDice)
     local statName = skillCheck.skill
     local amount = skillCheck.value
     local firstDie = math.random(1,6)
     local secondDie = math.random(1,6)
     local statValue = mde.getStat(statName)
-    local totalValue = firstDie + secondDie + statValue
+    local diceValue = firstDie + secondDie
+    if forceDice ~= nil then
+        diceValue = forceDice
+    end
+    local totalValue = diceValue + statValue
     --print("Active check: ", statName, " ", amount, " Rolls ", firstDie, secondDie, statValue, totalValue)
     --Snakeyes always fails.  Boxcars always succeeds.
     local checkSuccess = (totalValue >= amount)
-    if (totalValue == 2) then
+    if (diceValue == 2) then
         checkSuccess = false
-    elseif (totalValue == 12) then
+    elseif (diceValue == 12) then
         checkSuccess = true
     end
     if forceTo ~= nil then
@@ -138,6 +143,7 @@ local function activeCheck(skillCheck, forceTo)
     lwl.logDebug(TAG, "Active check: "..eventName.." "..statName.." "..amount.." Rolls "..firstDie.." "..secondDie.." "..statValue.." "..totalValue)
     mQueuedCheckAVList[eventName] = {success=checkSuccess, skill=skillCheck.skill, firstDie=firstDie,
         secondDie=secondDie, totalValue=totalValue, targetValue=amount}
+    --I could make it look nicer but still be wrong by setting both event names here.
     return checkSuccess
 end
 
@@ -255,12 +261,15 @@ local function appendChoices(locationEvent)
                 end
             end
         else --active
-            local activeSuccess = activeCheck(skillCheck, forceValue) --todo this should return the whole check, not success value.
-            if forceValue ~= nil then
-                print("Forced success to be ", forceValue)
-                activeSuccess = forceValue
-                forceValue = nil
+            local activeSuccess = activeCheck(skillCheck, mForceValue, mForcedDiceValue) --todo this should return the whole check, not success value.
+            if mForceValue ~= nil then
+                print("Forced success to be ", mForceValue)
             end
+            if mForcedDiceValue ~= nil then
+                print("Forced dice to be ", mForcedDiceValue)
+            end
+            mForceValue = nil
+            mForcedDiceValue = nil
             --print("active check found.")
             for choice in vter(choices) do
                 lwl.logDebug(TAG, choice.text.data.." "..skillCheck.placeholderChoiceText)
@@ -454,10 +463,14 @@ script.on_internal_event(Defines.InternalEvents.PRE_CREATE_CHOICEBOX, function(l
 --#endregion
 --#region ------------------------------DEBUG METHODS---------------------------------------
 function disco_force_success()
-    forceValue = true
+    mForceValue = true
 end
 
 function disco_force_fail()
-    forceValue = false
+    mForceValue = false
+end
+
+function disco_force_dice(total)
+    mForcedDiceValue = total
 end
 --#endregion

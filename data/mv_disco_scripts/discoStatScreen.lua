@@ -164,20 +164,28 @@ local mTooltipWindow = lwui.buildDynamicHeightTextBox(927, 25, 120, 90, tooltipV
 mTooltipWindow.text = "oh yeah baby this rendered some text and it's really big yo dode"
 lwui.addTopLevelObject(mTooltipWindow, "MOUSE_CONTROL_PRE")
 
+local cursorOffsetX = 16
+local cursorOffsetY = 14
+
 lwl.safe_script.on_internal_event("disco_stat_hover_logic", Defines.InternalEvents.ON_TICK, function()
 -- script.on_internal_event(Defines.InternalEvents.ON_TICK, function()
     if lwui.mHoveredObject then
         local statSource = lwui.mHoveredObject.statSource
         if statSource then
-            local mousePos = Hyperspace.Mouse.position
-            mTooltipWindow.text = "From: "..lwl.getCrewById(statSource.crewId):GetLongName()
-            mTooltipWindow.x = mousePos.x
-            mTooltipWindow.y = mousePos.y
             mRenderTooltip = true
-            return
+            local mousePos = Hyperspace.Mouse.position
+            mTooltipWindow.x = mousePos.x + cursorOffsetX
+            mTooltipWindow.y = mousePos.y + cursorOffsetY
+            local crewId = statSource.crewId
+            if crewId then
+                mTooltipWindow.text = "From: "..lwl.getCrewById(statSource.crewId):GetLongName()
+            else
+                mTooltipWindow.text = "From: Your ship"
+            end
         end
+    else
+        mRenderTooltip = false
     end
-    mRenderTooltip = false
     end)
 -----------Crew Screen--------------
 --Actually I decided I didn't want this
